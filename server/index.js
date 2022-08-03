@@ -1,10 +1,12 @@
 require("dotenv").config()
+
 console.log(process.env.MONGO_DB)
 // index.js
-var path = require("path")
-var express = require("express")
-var mongoose = require("mongoose")
-var app = express()
+const path = require("path")
+const express = require("express")
+const mongoose = require("mongoose")
+const app = express()
+const cors = require("cors")
 
 // DB setting
 mongoose.connect(`${process.env.MONGO_DB}`)
@@ -17,17 +19,20 @@ db.on("error", function (err) {
 })
 
 // Other settings
+app.use(cors())
+app.use(express.json())
 app.use(
   "/",
   express.static(
-    path.join(__dirname, "..", "/client/public")
+    path.join(__dirname, "..", "/client/build")
   )
 )
-app.use(
-  "/",
-  express.static(path.join(__dirname, "..", "/client/src"))
-)
 
+const exercisesRouter = require("./routes/exercises")
+const usersRouter = require("./routes/users")
+
+app.use("/exercises", exercisesRouter)
+app.use("/users", usersRouter)
 // Port setting
 var port = 3000
 app.listen(port, function () {
