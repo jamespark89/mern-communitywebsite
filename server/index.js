@@ -30,9 +30,11 @@ app.use(
 
 const exercisesRouter = require("./routes/exercises")
 const usersRouter = require("./routes/users")
-
+const jobsRouter = require("./routes/jobs")
 app.use("/exercises", exercisesRouter)
 app.use("/users", usersRouter)
+app.use("/jobs", jobsRouter)
+
 // Port setting
 var port = 3001
 app.listen(port, function () {
