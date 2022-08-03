@@ -34,7 +34,7 @@ const usersRouter = require("./routes/users")
 app.use("/exercises", exercisesRouter)
 app.use("/users", usersRouter)
 // Port setting
-var port = 3000
+var port = 3001
 app.listen(port, function () {
   console.log("server on! http://localhost:" + port)
 })
