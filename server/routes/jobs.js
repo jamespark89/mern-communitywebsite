@@ -3,6 +3,8 @@ let Job = require("../models/jobs.model")
 
 router.route("/").get((req, res) => {
   Job.find()
+    .limit(20)
+    .sort({ jobId: -1 })
     .then((jobs) => res.json(jobs))
     .catch((err) => res.status(400).json("Error:" + err))
 })

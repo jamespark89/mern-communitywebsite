@@ -8,6 +8,8 @@ import House from "./routes/House"
 import Job from "./routes/Job"
 import Login from "./routes/Login"
 import Navbar from "./components/Navbar"
+import JobDetail from "./routes/detail/_id"
+
 function App() {
   return (
     <Router>
@@ -16,6 +18,11 @@ function App() {
         <Route path="/" exact element={<Home />} />
         <Route path="/house" exact element={<House />} />
         <Route path="/job" exact element={<Job />} />
+        <Route
+          path="/job/:id"
+          exact
+          element={<JobDetail />}
+        />
         <Route path="/Login" exact element={<Login />} />
       </Routes>
     </Router>

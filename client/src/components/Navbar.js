@@ -15,7 +15,6 @@ export default function Navbar() {
 
   function classNames(...classes) {
     setCurrent()
-    console.log("change")
     return classes.filter(Boolean).join(" ")
   }
   function setCurrent() {
