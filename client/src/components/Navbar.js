@@ -1,28 +1,32 @@
 import { Fragment } from "react"
 import { Disclosure } from "@headlessui/react"
-import { Link } from "react-router-dom"
 import { MenuIcon, XIcon } from "@heroicons/react/outline"
 
-const navigation = [
-  { name: "Home", href: "/", current: true },
-  { name: "Job", href: "/job", current: false },
-  { name: "House", href: "/house", current: false }
-]
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ")
-}
-function setCurrent() {
-  navigation.map(
-    (item) =>
-      (item.current =
-        item.href === window.location.pathname
-          ? true
-          : false)
-  )
-}
-
 export default function Navbar() {
+  const navigation = [
+    { name: "Home", href: "/", current: true },
+    { name: "Job", href: "/job", current: false },
+    {
+      name: "House",
+      href: "/house",
+      current: false
+    }
+  ]
+
+  function classNames(...classes) {
+    setCurrent()
+    console.log("change")
+    return classes.filter(Boolean).join(" ")
+  }
+  function setCurrent() {
+    navigation.map(
+      (item) =>
+        (item.current =
+          item.href === window.location.pathname
+            ? true
+            : false)
+    )
+  }
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -59,10 +63,9 @@ export default function Navbar() {
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <Link
-                        to={item.href}
+                      <a
                         key={item.name}
-                        onClick={setCurrent()}
+                        href={item.href}
                         className={classNames(
                           item.current
                             ? "bg-gray-900 text-white"
@@ -74,7 +77,7 @@ export default function Navbar() {
                         }
                       >
                         {item.name}
-                      </Link>
+                      </a>
                     ))}
                   </div>
                 </div>
