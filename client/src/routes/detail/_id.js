@@ -13,17 +13,26 @@ export default function _id() {
   useEffect(() => {
     fetchData()
   }, [])
-  console.log(data)
   return (
-    <div>
-      <table className="container mx-auto mt-10 max-w-fit border-t-4">
-        <li>{data.title}</li>
-        <li>
+    <div className="container mx-auto w-3/5">
+      <div className="container mx-auto mt-10 w-full border-t-4 border-b-4">
+        <li className="w-full flex h-10 text-xl items-center">
+          {data.title}
+        </li>
+        <li className="w-full h-8 flex justify-between items-center bg-gray-200">
           <span>😃{data.username}</span>
           <span>🕰{data.date?.slice(5, 10)}</span>
         </li>
-        <li>{data.contents}</li>
-      </table>
+        <li className="w-full h-96 ">{data.contents}</li>
+      </div>
+      <div className="flex justify-end">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1">
+          Edit
+        </button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1">
+          Delete
+        </button>
+      </div>
     </div>
   )
 }
