@@ -1,11 +1,10 @@
-import axios from "axios"
 import { useEffect, useState } from "react"
+import jobDataService from "../services/job"
+
 export default function Job() {
   const [data, setData] = useState([])
   const fetchData = async () => {
-    await axios
-      .get("http://localhost:3001/jobs")
-      .then((res) => setData(res.data))
+    jobDataService.getAll().then((res) => setData(res.data))
   }
   useEffect(() => {
     fetchData()
@@ -13,9 +12,11 @@ export default function Job() {
 
   return (
     <div>
-      <div className="container mx-auto mt-10 max-w-fit border-t-4">
-        <div className="flex justify-center h-10 items-center border-b-2">
-          <li className="w-32 text-center">No</li>
+      <div className="jobList container mx-auto mt-10 max-w-fit border-t-4">
+        <div className="md:flex sm:hidden justify-center h-10 items-center border-b-2 bg-gray-100">
+          <li className="w-20 text-center md:inline sm:hidden">
+            No
+          </li>
           <li className="w-80 text-center">Title</li>
           <li className="w-32 text-center">Writer</li>
           <li className="w-32 text-center">Date</li>
@@ -23,22 +24,31 @@ export default function Job() {
         {data.map((item, index) => (
           <div
             key={index}
-            className="flex border-b h-8 items-center hover:bg-gray-200"
+            className="md:flex border-b md:h-8 items-center hover:bg-gray-200"
           >
-            <li className="w-32 text-center">
+            <li className="w-20 text-center md:inline sm:hidden">
               {item.jobId}
             </li>
             <a href={`/job/${item._id}`}>
-              <li className=" w-80 ">{item.title}</li>
+              <li className=" w-80 ml-2">{item.title}</li>
             </a>
-            <li className=" w-32 text-center">
-              {item.username}
-            </li>
-            <li className=" w-32 text-center">
-              {item.date?.slice(5, 10)}
-            </li>
+            <div className="flex">
+              <li className=" w-32 text-center text-sm">
+                {item.username}
+              </li>
+              <li className=" w-32 text-center text-sm">
+                {item.date?.slice(5, 10)}
+              </li>
+            </div>
           </div>
         ))}
+        <div className="flex justify-end ">
+          <a href="/job/new">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1">
+              New
+            </button>
+          </a>
+        </div>
       </div>
     </div>
   )

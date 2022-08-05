@@ -9,6 +9,7 @@ import Job from "./routes/Job"
 import Login from "./routes/Login"
 import Navbar from "./components/Navbar"
 import JobDetail from "./routes/detail/_id"
+import JobNew from "./routes/JobNew"
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           exact
           element={<JobDetail />}
         />
+        <Route path="/job/new" exact element={<JobNew />} />
         <Route path="/Login" exact element={<Login />} />
       </Routes>
     </Router>
