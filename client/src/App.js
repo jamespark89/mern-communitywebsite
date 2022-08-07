@@ -5,11 +5,12 @@ import {
 } from "react-router-dom"
 import Home from "./routes/Home"
 import House from "./routes/House"
-import Job from "./routes/Job"
+import Job from "./routes/job"
 import Login from "./routes/Login"
 import Navbar from "./components/Navbar"
-import JobDetail from "./routes/detail/_id"
-import JobNew from "./routes/JobNew"
+import JobDetail from "./routes/job/detail/_id"
+import JobNew from "./routes/job/JobNew"
+import JobEdit from "./routes/job/JobEdit"
 
 function App() {
   return (
@@ -25,6 +26,11 @@ function App() {
           element={<JobDetail />}
         />
         <Route path="/job/new" exact element={<JobNew />} />
+        <Route
+          path="/job/edit/:id"
+          exact
+          element={<JobEdit />}
+        />
         <Route path="/Login" exact element={<Login />} />
       </Routes>
     </Router>

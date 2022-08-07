@@ -1,12 +1,21 @@
-import React, { useState } from "react"
-import jobDataService from "../services/job"
+import React from "react"
+import { useParams } from "react-router-dom"
+import { useState, useEffect } from "react"
+import jobDataService from "../../services/job"
 
-export default function JobNew() {
+function JobEdit() {
+  const { id } = useParams()
   const [username, setUsername] = useState("")
   const [title, setTitle] = useState("")
   const [contents, setContents] = useState("")
-  const usernameChange = (e) => {
-    setUsername(e.target.value)
+  const [date, setDate] = useState("")
+  const fetchData = async () => {
+    jobDataService.getById(id).then((res) => {
+      setUsername(res.data.username)
+      setTitle(res.data.title)
+      setContents(res.data.contents)
+      setDate(res.data.date)
+    })
   }
   const titleChange = (e) => {
     setTitle(e.target.value)
@@ -14,15 +23,23 @@ export default function JobNew() {
   const contentsChange = (e) => {
     setContents(e.target.value)
   }
-  const saveJob = () => {
-    const data = {
+  const saveJob = (e) => {
+    e.preventDefault()
+    const updatedData = {
       username: username,
       title: title,
       contents: contents,
-      date: new Date()
+      date: date
     }
-    jobDataService.createJob(data)
+    console.log(updatedData)
+    jobDataService.updateJob(updatedData, id)
+    window.location = "http://localhost:3000/job"
   }
+  useEffect(() => {
+    fetchData()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div className="">
       <div className="mt-5 md:mt-0 md:col-span-2 md:w-1/2 sm:w-full mx-auto">
@@ -40,7 +57,8 @@ export default function JobNew() {
                   <input
                     type="text"
                     id="user-name"
-                    onChange={usernameChange}
+                    value={username}
+                    disabled
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />
                 </div>
@@ -55,6 +73,7 @@ export default function JobNew() {
                   <input
                     type="text"
                     onChange={titleChange}
+                    value={title}
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />
                 </div>
@@ -71,6 +90,7 @@ export default function JobNew() {
                     id="contents"
                     rows="20"
                     onChange={contentsChange}
+                    value={contents}
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />
                 </div>
@@ -90,3 +110,5 @@ export default function JobNew() {
     </div>
   )
 }
+
+export default JobEdit

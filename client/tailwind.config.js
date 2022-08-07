@@ -1,18 +1,13 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme")
+
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     screens: {
-      sm: "376px",
-      // => @media (min-width: 576px) { ... }
-
-      md: "700px",
-      // => @media (min-width: 960px) { ... }
-
-      lg: "1440px"
-      // => @media (min-width: 1440px) { ... }
-    },
-    extend: {}
+      xs: "375px",
+      ...defaultTheme.screens
+    }
   },
   plugins: [require("@tailwindcss/forms")]
 }
