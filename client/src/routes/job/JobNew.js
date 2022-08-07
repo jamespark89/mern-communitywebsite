@@ -14,7 +14,9 @@ export default function JobNew() {
   const contentsChange = (e) => {
     setContents(e.target.value)
   }
-  const saveJob = () => {
+  const saveJob = (e) => {
+    e.preventDefault()
+
     const data = {
       username: username,
       title: title,
@@ -22,6 +24,7 @@ export default function JobNew() {
       date: new Date()
     }
     jobDataService.createJob(data)
+    window.location.replace("http://localhost:3000/job")
   }
   return (
     <div className="">

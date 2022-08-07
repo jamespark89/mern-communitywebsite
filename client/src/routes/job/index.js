@@ -12,7 +12,7 @@ export default function Job() {
 
   return (
     <div>
-      <div className="max-w-fit mx-auto mt-10 border-t-4">
+      <div className="md:max-w-fit xs:w-11/12 mx-auto mt-10 border-t-4">
         <div className="md:flex xs:hidden justify-center h-10 items-center border-b-2 bg-gray-100">
           <li className="w-20 text-center md:inline xs:hidden">
             No

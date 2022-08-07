@@ -19,5 +19,8 @@ class jobDataService {
       data
     )
   }
+  deleteJob(id) {
+    return axios.delete(`http://localhost:3001/jobs/${id}`)
+  }
 }
 export default new jobDataService()
