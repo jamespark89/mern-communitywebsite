@@ -3,14 +3,14 @@ import {
   Route,
   BrowserRouter as Router
 } from "react-router-dom"
-import Home from "./routes/Home"
-import House from "./routes/House"
-import Job from "./routes/job"
-import Login from "./routes/Login"
+import Home from "./pages/Home"
+import House from "./pages/House"
+import Job from "./pages/job"
+import Login from "./pages/Login"
 import Navbar from "./components/Navbar"
-import JobDetail from "./routes/job/detail/_id"
-import JobNew from "./routes/job/JobNew"
-import JobEdit from "./routes/job/JobEdit"
+import JobDetail from "./pages/job/detail/_id"
+import JobNew from "./pages/job/JobNew"
+import JobEdit from "./pages/job/JobEdit"
 
 function App() {
   return (

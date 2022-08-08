@@ -1,6 +1,5 @@
 require("dotenv").config()
 
-console.log(process.env.MONGO_DB)
 // index.js
 const path = require("path")
 const express = require("express")
