@@ -1,12 +1,18 @@
+import axios from "axios"
 import GoogleLogin from "react-google-login"
 
 export default function LoginBtn() {
   const CLIENT_ID = process.env.REACT_APP_CLIENT_ID
-  const onSuccess = (res) => {
-    console.log(
-      "LOGIN SUCCESS! Current user:",
-      res.profileObj
-    )
+  const onSuccess = async (res) => {
+    const id_token = await res.getAuthResponse().id_token
+    axios
+      .post("http://localhost:3001/auth", {
+        id_token
+      })
+      .then((userinfo) => console.log(userinfo.data))
+      .catch((err) => {
+        console.log(err)
+      })
   }
   const onFailure = (res) => {
     console.log("LOGIN FAILED! res: ", res)

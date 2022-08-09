@@ -27,12 +27,15 @@ app.use(
   )
 )
 
+// Routes
 const exercisesRouter = require("./routes/exercises")
 const usersRouter = require("./routes/users")
 const jobsRouter = require("./routes/jobs")
+const authRouter = require("./routes/auth")
 app.use("/exercises", exercisesRouter)
 app.use("/users", usersRouter)
 app.use("/jobs", jobsRouter)
+app.use("/auth", authRouter)
 
 // Port setting
 var port = 3001
