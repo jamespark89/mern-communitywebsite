@@ -1,7 +1,8 @@
 const router = require("express").Router()
-let Job = require("../models/jobs.model")
+const Job = require("../models/jobs.model")
+const util = require("../util")
 
-router.route("/").get((req, res) => {
+router.get("/", util.isLoggedin, (req, res) => {
   Job.find()
     // .populate("author")
     .limit(20)
@@ -10,7 +11,7 @@ router.route("/").get((req, res) => {
     .catch((err) => res.status(400).json("Error:" + err))
 })
 
-router.route("/add").post((req, res) => {
+router.post("/add", (req, res) => {
   const username = req.body.username
   const title = req.body.title
   const contents = req.body.contents

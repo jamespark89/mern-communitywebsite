@@ -24,7 +24,6 @@ function JobEdit() {
     setContents(e.target.value)
   }
   const saveJob = (e) => {
-    e.preventDefault()
     const updatedData = {
       username: username,
       title: title,
@@ -33,7 +32,6 @@ function JobEdit() {
     }
     console.log(updatedData)
     jobDataService.updateJob(updatedData, id)
-    window.location = "http://localhost:3000/job"
   }
   useEffect(() => {
     fetchData()

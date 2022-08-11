@@ -24,7 +24,6 @@ export default function JobNew() {
       date: new Date()
     }
     jobDataService.createJob(data)
-    window.location.replace("http://localhost:3000/job")
   }
   return (
     <div className="">

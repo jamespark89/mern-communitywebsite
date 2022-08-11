@@ -1,11 +1,12 @@
 require("dotenv").config()
-
 // index.js
-const path = require("path")
 const express = require("express")
 const mongoose = require("mongoose")
 const app = express()
 const cors = require("cors")
+const passport = require("./config/passport")
+const session = require("express-session")
+const util = require("./util")
 
 // DB setting
 mongoose.connect(`${process.env.MONGO_DB}`)
@@ -17,27 +18,41 @@ db.on("error", function (err) {
   console.log("DB ERROR : ", err)
 })
 
-// Other settings
-app.use(cors())
-app.use(express.json())
+//Passport
 app.use(
-  "/",
-  express.static(
-    path.join(__dirname, "..", "/client/build")
-  )
+  session({
+    secret: "MySecret",
+    resave: true,
+    saveUninitialized: false
+  })
 )
+app.use(passport.initialize())
+app.use(passport.session())
 
+// Custom Middlewares
+app.use(function (req, res, next) {
+  res.locals.isAuthenticated = req.isAuthenticated()
+  res.locals.currentUser = req.user
+  res.locals.util = util
+  next()
+})
+
+//Other
+app.use(
+  cors({
+    credentials: true,
+    origin: "http://localhost:3000"
+  })
+)
+app.use(express.json())
 // Routes
-const exercisesRouter = require("./routes/exercises")
-const usersRouter = require("./routes/users")
-const jobsRouter = require("./routes/jobs")
-const authRouter = require("./routes/auth")
-app.use("/exercises", exercisesRouter)
-app.use("/users", usersRouter)
-app.use("/jobs", jobsRouter)
-app.use("/auth", authRouter)
-
-// Port setting
+app.use("/users", require("./routes/users"))
+app.use("/jobs", require("./routes/jobs"))
+app.use("/auth", require("./routes/auth"))
+app.get("/protected", util.isLoggedin, (req, res) =>
+  res.send(`Heloo! ${req.user.displayName}`)
+)
+app.get("/fail", (req, res) => res.send(`fail`))
 var port = 3001
 app.listen(port, function () {
   console.log("server on! http://localhost:" + port)
