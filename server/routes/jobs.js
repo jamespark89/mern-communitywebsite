@@ -1,8 +1,7 @@
 const router = require("express").Router()
 const Job = require("../models/jobs.model")
 const util = require("../util")
-
-router.get("/", util.isLoggedin, (req, res) => {
+router.get("/", (req, res) => {
   Job.find()
     // .populate("author")
     .limit(20)
@@ -11,7 +10,7 @@ router.get("/", util.isLoggedin, (req, res) => {
     .catch((err) => res.status(400).json("Error:" + err))
 })
 
-router.post("/add", (req, res) => {
+router.post("/add", util.isLoggedin, (req, res) => {
   const username = req.body.username
   const title = req.body.title
   const contents = req.body.contents
@@ -38,7 +37,7 @@ router.route("/:id").get((req, res) => {
     .catch((err) => res.status(400).json("Error:" + err))
 })
 
-router.route("/:id").delete((req, res) => {
+router.route("/:id").delete(util.isLoggedin, (req, res) => {
   Job.findByIdAndDelete(req.params.id)
     .then(() => res.json("Job deleted."))
     .catch((err) => res.status(400).json("Error:" + err))

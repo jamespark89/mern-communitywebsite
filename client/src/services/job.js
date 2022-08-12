@@ -1,8 +1,8 @@
 const axios = require("axios")
-
+axios.defaults.withCredentials = true
 class jobDataService {
-  getAll() {
-    return axios.get("http://localhost:3001/jobs")
+  async getAll() {
+    return await axios.get("http://localhost:3001/jobs")
   }
   getById(id) {
     return axios.get(`http://localhost:3001/jobs/${id}`)
