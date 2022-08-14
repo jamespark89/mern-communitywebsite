@@ -11,31 +11,15 @@ import Navbar from "./components/Navbar"
 import JobDetail from "./pages/job/detail/_id"
 import JobNew from "./pages/job/JobNew"
 import JobEdit from "./pages/job/JobEdit"
-import { useEffect, useState } from "react"
-
+import { useSelector, useDispatch } from "react-redux"
+import { useEffect } from "react"
+import { getLoginUser, reset } from "./redux/authSlice"
 function App() {
-  const [user, setUser] = useState(null)
-  const getUser = () => {
-    fetch("http://localhost:3001/auth/login/success", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "content-Type": "application/json",
-        "Access-Control-Allow-Crendentials": true
-      }
-    })
-      .then((res) => {
-        if (res.status === 200) {
-          return res.json()
-        }
-        throw new Error("authentication has been failed!")
-      })
-      .then((resObject) => setUser(resObject.user))
-      .catch((err) => console.log(err))
-  }
+  const dispatch = useDispatch()
+
   useEffect(() => {
-    getUser()
+    dispatch(getLoginUser())
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <Router>

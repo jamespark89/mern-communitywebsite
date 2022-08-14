@@ -6,10 +6,11 @@ const app = express()
 const cors = require("cors")
 const passport = require("./config/passport")
 const session = require("express-session")
-const util = require("./util")
+const util = require("./middleware/util")
+const bodyParser = require("body-parser")
 
 // DB setting
-mongoose.connect(`${process.env.MONGO_DB}`)
+mongoose.connect(process.env.MONGO_DB)
 var db = mongoose.connection
 db.once("open", function () {
   console.log("DB connected")
@@ -41,10 +42,13 @@ app.use(function (req, res, next) {
 })
 
 //Other
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000"]
+    origin: [process.env.BASE_URL],
+    methods: ["GET,PUT,POST,DELETE,PATCH,OPTIONS"]
   })
 )
 app.use(express.json())

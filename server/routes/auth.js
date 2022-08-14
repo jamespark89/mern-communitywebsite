@@ -9,11 +9,16 @@ router.get("/logout", function (req, res) {
     }
     req.session.destroy()
     console.log("logout")
-    res.redirect("http://localhost:3000")
+    res.redirect(process.env.BASE_URL)
   })
 })
 
-router.get("/google/login", passport.authenticate("google"))
+router.get(
+  "/google/login",
+  passport.authenticate("google", {
+    scope: ["profile", "email"]
+  })
+)
 
 router.get(
   "/google/callback",
@@ -22,11 +27,13 @@ router.get(
   }),
   // Successful authentication, redirect home.
   (req, res) => {
-    res.redirect("http://localhost:3000")
+    console.log("login")
+    res.redirect(process.env.BASE_URL)
   }
 )
 
 router.get("/login/failed", (req, res) => {
+  res.redirect(process.env.BASE_URL)
   res.status(401).json({
     success: false,
     message: "failure"

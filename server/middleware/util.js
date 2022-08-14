@@ -5,7 +5,7 @@ util.isLoggedin = function (req, res, next) {
   if (req.isAuthenticated()) {
     next()
   } else {
-    res.redirect("auth/login/failed")
+    res.status(401).send("Please Log in")
   }
 }
 
@@ -14,7 +14,6 @@ util.noPermission = function (req, res) {
     login: "You don't have permission"
   })
   req.logout()
-  res.redirect("/login")
 }
 
 util.checkPermission = function (req, res, next) {
@@ -22,7 +21,6 @@ util.checkPermission = function (req, res, next) {
     if (err) return res.json(err)
     if (job.author != req.user._id)
       return util.noPermission(req, res)
-
     next()
   })
 }

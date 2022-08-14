@@ -7,9 +7,13 @@ export default function Job() {
   const fetchData = async () => {
     await jobDataService
       .getAll()
-      .then((res) => setData(res.data))
+      .then((res) => {
+        setData(res.data)
+      })
       .then(() => setLoading(false))
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        console.log(err)
+      })
   }
   useEffect(() => {
     fetchData()

@@ -15,16 +15,22 @@ passport.use(
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
-      scope: ["profile", "email"]
+      scope: ["profile", "email"],
+      state: true
     },
-    function (accessToken, refreshToken, profile, cb) {
+    function verify(
+      accessToken,
+      refreshToken,
+      profile,
+      cb
+    ) {
       User.findOne(
         { googleId: profile.id },
         (err, user) => {
-          console.log("user", user)
           if (user) {
             return cb(null, user)
           } else {
+            console.log(profile)
             const googleId = profile.id
             const username = profile.displayName
             const email = profile.emails[0].value
@@ -35,9 +41,14 @@ passport.use(
               email,
               picture
             })
-            console.log(newUser)
-            newUser.save()
-            return cb(null, newUser)
+            newUser.save().then(() => {
+              User.findOne(
+                { googleId: profile.id },
+                (err, user) => {
+                  return cb(null, user)
+                }
+              )
+            })
           }
         }
       )

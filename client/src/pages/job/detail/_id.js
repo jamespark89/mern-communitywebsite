@@ -17,7 +17,6 @@ export default function _id() {
   }
   const deleteJob = () => {
     jobDataService.deleteJob(id)
-    window.location.replace("http://localhost:3000/job")
   }
   useEffect(() => {
     fetchData()

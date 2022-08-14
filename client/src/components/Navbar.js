@@ -1,8 +1,10 @@
 import { Fragment } from "react"
 import { Disclosure } from "@headlessui/react"
 import { MenuIcon, XIcon } from "@heroicons/react/outline"
+import { useSelector } from "react-redux"
 
 export default function Navbar() {
+  const { user } = useSelector((state) => state.auth)
   const navigation = [
     { name: "Home", href: "/", current: true },
     { name: "Job", href: "/job", current: false },
@@ -67,7 +69,7 @@ export default function Navbar() {
                         href={item.href}
                         className={classNames(
                           item.current
-                            ? "bg-gray-900 text-white"
+                            ? "bg-cyan-200/50 text-white"
                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                           "px-3 py-2 rounded-md text-sm font-medium"
                         )}
@@ -82,22 +84,30 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <a href="/login">
-                  <button
-                    type="button"
-                    className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                  >
-                    <span>Login</span>
-                  </button>
-                </a>
-                <a href="http://localhost:3001/auth/logout">
-                  <button
-                    type="button"
-                    className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                  >
-                    <span>Logout</span>
-                  </button>
-                </a>
+                {user ? (
+                  <>
+                    <span className="text-white p-3">
+                      {user.username}
+                    </span>
+                    <a href="http://localhost:3001/auth/logout">
+                      <button
+                        type="button"
+                        className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                      >
+                        <span>Logout</span>
+                      </button>
+                    </a>
+                  </>
+                ) : (
+                  <a href="/login">
+                    <button
+                      type="button"
+                      className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                    >
+                      <span>Login</span>
+                    </button>
+                  </a>
+                )}
               </div>
             </div>
           </div>
@@ -110,7 +120,7 @@ export default function Navbar() {
                   href={item.href}
                   className={classNames(
                     item.current
-                      ? "bg-gray-900 text-white"
+                      ? "bg-cyan-200/50 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white",
                     "block px-3 py-2 rounded-md text-base font-medium"
                   )}
