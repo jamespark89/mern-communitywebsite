@@ -55,7 +55,7 @@ app.use(express.json())
 
 // Routes
 app.use("/users", require("./routes/users"))
-app.use("/jobs", require("./routes/jobs"))
+app.use("/api/jobs", require("./routes/jobs"))
 app.use("/auth", require("./routes/auth"))
 
 var port = 3001

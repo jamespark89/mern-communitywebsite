@@ -10,7 +10,7 @@ util.isLoggedin = function (req, res, next) {
 }
 
 util.noPermission = function (req, res) {
-  req.flash("errors", {
+  req.send("errors", {
     login: "You don't have permission"
   })
   req.logout()
