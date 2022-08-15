@@ -9,7 +9,6 @@ const jobSchema = new Schema(
     },
     title: { type: String, required: true },
     contents: { type: String, required: true },
-    date: { type: Date, required: true },
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",

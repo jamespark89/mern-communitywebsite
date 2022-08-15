@@ -1,24 +1,17 @@
 require("dotenv").config()
 // index.js
 const express = require("express")
-const mongoose = require("mongoose")
 const app = express()
 const cors = require("cors")
 const passport = require("./config/passport")
 const session = require("express-session")
 const util = require("./middleware/util")
-const bodyParser = require("body-parser")
+const connectDB = require("./config/db")
+const {
+  errorHandler
+} = require("./middleware/errorMiddleware")
 
-// DB setting
-mongoose.connect(process.env.MONGO_DB)
-var db = mongoose.connection
-db.once("open", function () {
-  console.log("DB connected")
-})
-db.on("error", function (err) {
-  console.log("DB ERROR : ", err)
-})
-
+connectDB()
 //Passport
 app.use(
   session({
@@ -42,8 +35,8 @@ app.use(function (req, res, next) {
 })
 
 //Other
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(
   cors({
     credentials: true,
@@ -57,7 +50,7 @@ app.use(express.json())
 app.use("/users", require("./routes/users"))
 app.use("/api/jobs", require("./routes/jobs"))
 app.use("/auth", require("./routes/auth"))
-
+app.use(errorHandler)
 var port = 3001
 app.listen(port, function () {
   console.log("server on! http://localhost:" + port)

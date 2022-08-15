@@ -1,4 +1,4 @@
-const Job = require("../models/jobs.model")
+const Job = require("../models/job.model")
 const util = {}
 
 util.isLoggedin = function (req, res, next) {
@@ -9,19 +9,18 @@ util.isLoggedin = function (req, res, next) {
   }
 }
 
-util.noPermission = function (req, res) {
-  req.send("errors", {
-    login: "You don't have permission"
-  })
-  req.logout()
+util.noPermission = async function (req, res) {
+  res.status(401).send("You don't have permission")
 }
 
-util.checkPermission = function (req, res, next) {
-  Job.findOne({ _id: req.params.id }, function (err, job) {
-    if (err) return res.json(err)
-    if (job.author != req.user._id)
-      return util.noPermission(req, res)
+util.checkPermission = async function (req, res, next) {
+  const job = await Job.findById(req.params.id)
+
+  if (job.author == req.user._id) {
     next()
-  })
+  } else {
+    return res.status(401).send("You don't have permission")
+  }
 }
+
 module.exports = util

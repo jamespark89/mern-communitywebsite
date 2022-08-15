@@ -1,74 +1,83 @@
-const Job = require("../models/jobs.model")
-const util = require("../middleware/util")
-
+const Job = require("../models/job.model")
+const asyncHandler = require("express-async-handler")
 // @desc   Get jobs
 // @route  GET /api/jobs
 // @access Private
-const getJobs = (req, res) => {
-  Job.find()
+const getJobs = asyncHandler(async (req, res) => {
+  const jobs = await Job.find()
     .populate("author")
     .limit(20)
     .sort("-createdAt")
-    .then((jobs) => res.json(jobs))
-    .catch((err) => res.status(400).json("Error:" + err))
-}
+
+  res.status(200).json(jobs)
+})
 
 // @desc   Set jobs
 // @route  POST /api/jobs
 // @access Private
-const setJob = (req, res) => {
-  const author = req.user._id
-  const username = req.body.username
-  const title = req.body.title
-  const contents = req.body.contents
-  const date = Date.parse(req.body.date)
-  const newJob = new Job({
-    username,
-    title,
-    contents,
-    date,
-    author
+const setJob = asyncHandler(async (req, res) => {
+  console.log("create1")
+  if (!req.body.title) {
+    res.status(400)
+    throw new Error("Please add a title")
+  }
+  if (!req.body.contents) {
+    res.status(400)
+    throw new Error("Please add a content")
+  }
+  console.log("create2")
+  const job = await Job.create({
+    username: req.body.username,
+    title: req.body.title,
+    contents: req.body.contents,
+    author: req.user._id
   })
-  newJob
-    .save()
-    .then(() => res.json("Job added!"))
-    .catch((err) => res.status(400).json("Error:" + err))
-}
+  console.log("create3")
+  res.status(200).json(job)
+})
 
 // @desc   Update job
 // @route  PUT /api/jobs/:id
 // @access Private
-const updateJob = (req, res) => {
-  Job.findOneAndUpdate(
-    { _id: req.params.id },
+const updateJob = asyncHandler(async (req, res) => {
+  const job = await Job.findById(req.params.id)
+  if (!job) {
+    res.status(400)
+    throw new Error("job not found")
+  }
+  const updatedJob = await Job.findByIdAndUpdate(
+    req.params.id,
     req.body,
-    (err, jobs) => {
-      if (err) return res.json(err)
-      res.redirect("/job")
-    }
+    { new: true }
   )
-}
+  res.status(200).json(updatedJob)
+})
 
 // @desc   delete job
 // @route  DELETE /api/jobs/:id
 // @access Private
-const deleteJob = (req, res) => {
-  ;(req, res) => {
-    Job.findByIdAndDelete(req.params.id)
-      .then(() => res.json("Job deleted."))
-      .catch((err) => res.status(400).json("Error:" + err))
+const deleteJob = asyncHandler(async (req, res) => {
+  console.log("1")
+  const job = await Job.findById(req.params.id)
+  if (!job) {
+    res.status(400)
+    throw new Error("job not found")
   }
-}
+  console.log("2")
+  await job.remove()
+  console.log("3")
+  res.status(200).json({ id: req.params.id })
+})
 
 // @desc   Get job by id
 // @route  GET /api/jobs/:id
 // @access Private
-const getJobById = (req, res) => {
-  Job.findById(req.params.id)
-    .populate("author")
-    .then((exercises) => res.json(exercises))
-    .catch((err) => res.status(400).json("Error:" + err))
-}
+const getJobById = asyncHandler(async (req, res) => {
+  const job = await Job.findById(req.params.id).populate(
+    "author"
+  )
+  res.status(200).json(job)
+})
 
 module.exports = {
   getJobs,
