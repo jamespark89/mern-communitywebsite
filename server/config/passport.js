@@ -1,5 +1,8 @@
 const passport = require("passport")
 const User = require("../models/user.model")
+const {
+  registerGoogleUser
+} = require("../controllers/userController")
 var GoogleStrategy =
   require("passport-google-oauth20").Strategy
 
@@ -24,31 +27,24 @@ passport.use(
       profile,
       cb
     ) {
+      // Check if user exists
       User.findOne(
         { googleId: profile.id },
-        (err, user) => {
+        async (err, user) => {
           if (user) {
             return cb(null, user)
           } else {
-            console.log(profile)
-            const googleId = profile.id
-            const username = profile.displayName
-            const email = profile.emails[0].value
-            const picture = profile.photos[0].value
-            const newUser = new User({
-              googleId,
-              username,
-              email,
-              picture
-            })
-            newUser.save().then(() => {
-              User.findOne(
-                { googleId: profile.id },
-                (err, user) => {
-                  return cb(null, user)
-                }
-              )
-            })
+            //if user doesn't exist
+            const newUser = await registerGoogleUser(
+              profile
+            )
+            console.log(newUser)
+            User.findOne(
+              { googleId: profile.id },
+              (err, user) => {
+                return cb(null, user)
+              }
+            )
           }
         }
       )

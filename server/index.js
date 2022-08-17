@@ -47,7 +47,7 @@ app.use(
 app.use(express.json())
 
 // Routes
-app.use("/users", require("./routes/users"))
+app.use("/api/users", require("./routes/users"))
 app.use("/api/jobs", require("./routes/jobs"))
 app.use("/auth", require("./routes/auth"))
 app.use(errorHandler)

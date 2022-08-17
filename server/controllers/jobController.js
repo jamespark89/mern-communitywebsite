@@ -16,7 +16,10 @@ const getJobs = asyncHandler(async (req, res) => {
 // @route  POST /api/jobs
 // @access Private
 const setJob = asyncHandler(async (req, res) => {
-  console.log("create1")
+  if (!req.body.username) {
+    res.status(401)
+    throw new Error("Please login first")
+  }
   if (!req.body.title) {
     res.status(400)
     throw new Error("Please add a title")
@@ -25,14 +28,12 @@ const setJob = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error("Please add a content")
   }
-  console.log("create2")
   const job = await Job.create({
     username: req.body.username,
     title: req.body.title,
     contents: req.body.contents,
     author: req.user._id
   })
-  console.log("create3")
   res.status(200).json(job)
 })
 
@@ -57,15 +58,12 @@ const updateJob = asyncHandler(async (req, res) => {
 // @route  DELETE /api/jobs/:id
 // @access Private
 const deleteJob = asyncHandler(async (req, res) => {
-  console.log("1")
   const job = await Job.findById(req.params.id)
   if (!job) {
     res.status(400)
     throw new Error("job not found")
   }
-  console.log("2")
   await job.remove()
-  console.log("3")
   res.status(200).json({ id: req.params.id })
 })
 
