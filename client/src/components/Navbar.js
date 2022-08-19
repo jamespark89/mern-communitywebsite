@@ -1,7 +1,8 @@
-import { Fragment } from "react"
 import { Disclosure } from "@headlessui/react"
 import { MenuIcon, XIcon } from "@heroicons/react/outline"
+import axios from "axios"
 import { useSelector } from "react-redux"
+import { NavLink } from "react-router-dom"
 
 export default function Navbar() {
   const { user } = useSelector((state) => state.auth)
@@ -14,19 +15,13 @@ export default function Navbar() {
       current: false
     }
   ]
-
-  function classNames(...classes) {
-    setCurrent()
-    return classes.filter(Boolean).join(" ")
+  const getMe = async () => {
+    axios
+      .get("http://localhost:3001/api/users/me")
+      .then((res) => console.log(res))
   }
-  function setCurrent() {
-    navigation.map(
-      (item) =>
-        (item.current =
-          item.href === window.location.pathname
-            ? true
-            : false)
-    )
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(" ")
   }
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -64,21 +59,23 @@ export default function Navbar() {
                 <div className="hidden sm:block sm:ml-6">
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
-                      <a
+                      <NavLink
                         key={item.name}
-                        href={item.href}
-                        className={classNames(
-                          item.current
-                            ? "bg-cyan-200/50 text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "px-3 py-2 rounded-md text-sm font-medium"
-                        )}
+                        to={item.href}
+                        className={({ isActive }) =>
+                          classNames(
+                            isActive
+                              ? "bg-cyan-200/50 text-white"
+                              : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                            "px-3 py-2 rounded-md text-sm font-medium"
+                          )
+                        }
                         aria-current={
                           item.current ? "page" : undefined
                         }
                       >
                         {item.name}
-                      </a>
+                      </NavLink>
                     ))}
                   </div>
                 </div>
@@ -86,7 +83,10 @@ export default function Navbar() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {user ? (
                   <>
-                    <span className="text-white p-3">
+                    <span
+                      onClick={getMe}
+                      className="text-white p-3"
+                    >
                       {user.username}
                     </span>
                     <a href="http://localhost:3001/auth/logout">
@@ -114,22 +114,24 @@ export default function Navbar() {
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (
-                <Disclosure.Button
+                <NavLink
                   key={item.name}
                   as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-cyan-200/50 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block px-3 py-2 rounded-md text-base font-medium"
-                  )}
+                  to={item.href}
+                  className={({ isActive }) =>
+                    classNames(
+                      isActive
+                        ? "bg-cyan-200/50 text-white"
+                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                      "block px-3 py-2 rounded-md text-base font-medium"
+                    )
+                  }
                   aria-current={
                     item.current ? "page" : undefined
                   }
                 >
                   {item.name}
-                </Disclosure.Button>
+                </NavLink>
               ))}
             </div>
           </Disclosure.Panel>

@@ -1,22 +1,39 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import jobDataService from "../../../services/job"
 import Modal from "../../../components/Modal"
+import { useSelector } from "react-redux"
 
 export default function _id() {
   const { id } = useParams()
+  const { user } = useSelector((state) => state.auth)
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
-  const [data, setData] = useState([])
+  const [data, setData] = useState({
+    username: "",
+    title: "",
+    contents: "",
+    author: {},
+    date: ""
+  })
   const fetchData = async () => {
-    jobDataService
-      .getById(id)
-      .then((res) => setData(res.data))
+    jobDataService.getById(id).then((res) =>
+      setData({
+        username: res.data.username,
+        title: res.data.title,
+        contents: res.data.contents,
+        author: res.data.author,
+        date: res.data.createdAt
+      })
+    )
   }
   const openModal = () => {
     setOpen(true)
   }
   const deleteJob = () => {
-    jobDataService.deleteJob(id)
+    jobDataService.deleteJob(id).then((res) => {
+      if (res.status === 200) navigate("/job")
+    })
   }
   useEffect(() => {
     fetchData()
@@ -40,19 +57,23 @@ export default function _id() {
           </li>
           <li className="w-full h-96 ">{data.contents}</li>
         </div>
-        <div className="flex justify-end">
-          <a href={`/job/edit/${id}`}>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1">
-              Edit
-            </button>
-          </a>
-          <button
-            onClick={openModal}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
-          >
-            Delete
-          </button>
-        </div>
+        {!user || user?._id !== data?.author?._id ? null : (
+          <>
+            <div className="flex justify-end">
+              <a href={`/job/edit/${id}`}>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1">
+                  Edit
+                </button>
+              </a>
+              <button
+                onClick={openModal}
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
+              >
+                Delete
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   )

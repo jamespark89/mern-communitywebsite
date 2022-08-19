@@ -1,37 +1,38 @@
 import React from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
 import jobDataService from "../../services/job"
 
 function JobEdit() {
   const { id } = useParams()
-  const [username, setUsername] = useState("")
-  const [title, setTitle] = useState("")
-  const [contents, setContents] = useState("")
-  const [date, setDate] = useState("")
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    username: "",
+    title: "",
+    contents: ""
+  })
+  const { username, title, contents } = formData
   const fetchData = async () => {
     jobDataService.getById(id).then((res) => {
-      setUsername(res.data.username)
-      setTitle(res.data.title)
-      setContents(res.data.contents)
-      setDate(res.data.date)
+      setFormData({
+        username: res.data.username,
+        title: res.data.title,
+        contents: res.data.contents
+      })
     })
   }
-  const titleChange = (e) => {
-    setTitle(e.target.value)
+  const onChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
   }
-  const contentsChange = (e) => {
-    setContents(e.target.value)
-  }
+
   const saveJob = (e) => {
-    const updatedData = {
-      username: username,
-      title: title,
-      contents: contents,
-      date: date
-    }
-    console.log(updatedData)
-    jobDataService.updateJob(updatedData, id)
+    e.preventDefault()
+    jobDataService.updateJob(formData, id).then((res) => {
+      if (res.status === 200) navigate("/job")
+    })
   }
   useEffect(() => {
     fetchData()
@@ -70,7 +71,8 @@ function JobEdit() {
                   </label>
                   <input
                     type="text"
-                    onChange={titleChange}
+                    onChange={onChange}
+                    name="title"
                     value={title}
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />
@@ -87,7 +89,8 @@ function JobEdit() {
                     type="text"
                     id="contents"
                     rows="20"
-                    onChange={contentsChange}
+                    onChange={onChange}
+                    name="contents"
                     value={contents}
                     className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                   />

@@ -1,5 +1,6 @@
 const Job = require("../models/job.model")
 const asyncHandler = require("express-async-handler")
+const User = require("../models/user.model")
 // @desc   Get jobs
 // @route  GET /api/jobs
 // @access Private
@@ -44,13 +45,14 @@ const updateJob = asyncHandler(async (req, res) => {
   const job = await Job.findById(req.params.id)
   if (!job) {
     res.status(400)
-    throw new Error("job not found")
+    throw new Error("Job not found")
   }
   const updatedJob = await Job.findByIdAndUpdate(
     req.params.id,
     req.body,
     { new: true }
   )
+
   res.status(200).json(updatedJob)
 })
 

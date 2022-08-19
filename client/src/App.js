@@ -11,9 +11,11 @@ import Navbar from "./components/Navbar"
 import JobDetail from "./pages/job/detail/_id"
 import JobNew from "./pages/job/JobNew"
 import JobEdit from "./pages/job/JobEdit"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { getLoginUser, reset } from "./redux/authSlice"
+import { getLoginUser } from "./redux/authSlice"
+import PrivateRoutes from "./utils/PrivateRoutes"
+
 function App() {
   const dispatch = useDispatch()
 
@@ -25,6 +27,18 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
+        <Route element={<PrivateRoutes />}>
+          <Route
+            path="/job/new"
+            exact
+            element={<JobNew />}
+          />
+          <Route
+            path="/job/edit/:id"
+            exact
+            element={<JobEdit />}
+          />
+        </Route>
         <Route path="/" exact element={<Home />} />
         <Route path="/house" exact element={<House />} />
         <Route path="/job" exact element={<Job />} />
@@ -33,12 +47,7 @@ function App() {
           exact
           element={<JobDetail />}
         />
-        <Route path="/job/new" exact element={<JobNew />} />
-        <Route
-          path="/job/edit/:id"
-          exact
-          element={<JobEdit />}
-        />
+
         <Route path="/login" exact element={<Login />} />
         <Route path="/login/error" exact>
           Error loging in. Please try again later!

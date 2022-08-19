@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react"
 import jobDataService from "../../services/job"
-
+import { useSelector } from "react-redux"
+import { Link, useNavigate } from "react-router-dom"
 export default function Job() {
+  const { user } = useSelector((state) => state.auth)
+  const navigate = useNavigate()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const fetchData = async () => {
@@ -14,6 +17,9 @@ export default function Job() {
       .catch((err) => {
         console.log(err)
       })
+  }
+  const handleOnClick = async () => {
+    user ? navigate("/job/new") : navigate("/login")
   }
   useEffect(() => {
     fetchData()
@@ -43,28 +49,29 @@ export default function Job() {
               <li className="w-20 text-center md:inline xs:hidden">
                 {item.jobId}
               </li>
-              <a href={`/job/${item._id}`}>
+              <Link to={`/job/${item._id}`}>
                 <li className="md:w-96 xs:w-full pl-2 truncate">
                   {item.title}
                 </li>
-              </a>
+              </Link>
               <div className="flex">
                 <li className=" w-32 text-center text-sm">
                   😃{item.username}
                 </li>
                 <li className=" w-32 text-center text-sm">
-                  🕰{item.date?.slice(5, 10)}
+                  🕰{item.createdAt?.slice(5, 10)}
                 </li>
               </div>
             </div>
           ))
         )}
         <div className="flex justify-end ">
-          <a href="/job/new">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1">
-              New
-            </button>
-          </a>
+          <button
+            onClick={handleOnClick}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
+          >
+            New
+          </button>
         </div>
       </div>
     </div>
