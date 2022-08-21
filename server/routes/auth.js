@@ -9,7 +9,7 @@ router.get("/logout", function (req, res) {
     }
     req.session.destroy()
     console.log("logout")
-    res.redirect(process.env.BASE_URL)
+    res.status(200).send()
   })
 })
 
@@ -33,7 +33,6 @@ router.get(
 )
 
 router.get("/login/failed", (req, res) => {
-  res.redirect(process.env.BASE_URL)
   res.status(401).json({
     success: false,
     message: "failure"
@@ -45,6 +44,11 @@ router.get("/login/success", (req, res) => {
       success: true,
       message: "successful",
       user: req.user
+    })
+  } else {
+    res.json({
+      success: false,
+      user: null
     })
   }
 })

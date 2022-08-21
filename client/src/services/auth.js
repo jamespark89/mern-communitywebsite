@@ -7,9 +7,8 @@ const getLoginUser = async () => {
       if (res.status === 200) {
         return res.data.user
       }
-      throw new Error("authentication has been failed!")
     })
-    .catch((err) => console.log(err))
+    .catch(() => null)
 }
 const logout = async () => {
   axios.get("http://localhost:3001/auth/logout")

@@ -1,11 +1,13 @@
 import { Disclosure } from "@headlessui/react"
 import { MenuIcon, XIcon } from "@heroicons/react/outline"
 import axios from "axios"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { NavLink } from "react-router-dom"
+import { logout } from "../redux/authSlice"
 
 export default function Navbar() {
   const { user } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
   const navigation = [
     { name: "Home", href: "/", current: true },
     { name: "Job", href: "/job", current: false },
@@ -89,14 +91,14 @@ export default function Navbar() {
                     >
                       {user.username}
                     </span>
-                    <a href="http://localhost:3001/auth/logout">
-                      <button
-                        type="button"
-                        className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                      >
-                        <span>Logout</span>
-                      </button>
-                    </a>
+
+                    <button
+                      onClick={() => dispatch(logout())}
+                      type="button"
+                      className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                    >
+                      Logout
+                    </button>
                   </>
                 ) : (
                   <a href="/login">
