@@ -18,9 +18,7 @@ export default function Job() {
         console.log(err)
       })
   }
-  const handleOnClick = async () => {
-    user ? navigate("/job/new") : navigate("/login")
-  }
+
   useEffect(() => {
     fetchData()
   }, [])
@@ -67,7 +65,7 @@ export default function Job() {
         )}
         <div className="flex justify-end ">
           <button
-            onClick={handleOnClick}
+            onClick={() => navigate("/job/new")}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
           >
             New
