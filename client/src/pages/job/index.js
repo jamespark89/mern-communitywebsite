@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react"
 import jobDataService from "../../services/job"
-import { useSelector } from "react-redux"
 import { Link, useNavigate } from "react-router-dom"
 export default function Job() {
-  const { user } = useSelector((state) => state.auth)
   const navigate = useNavigate()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -24,8 +22,16 @@ export default function Job() {
   }, [])
 
   return (
-    <div>
-      <div className="md:max-w-fit xs:w-11/12 mx-auto mt-10 border-t-4">
+    <div className="md:max-w-fit xs:w-11/12 mx-auto mt-10">
+      <div className="flex justify-end ">
+        <button
+          onClick={() => navigate("/job/new")}
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
+        >
+          New
+        </button>
+      </div>
+      <div className="md:max-w-fit  mx-auto mt-10 border-t-4">
         <div className="md:flex xs:hidden justify-center h-10 items-center border-b-2 bg-gray-100">
           <li className="w-20 text-center md:inline xs:hidden">
             No
@@ -63,14 +69,6 @@ export default function Job() {
             </div>
           ))
         )}
-        <div className="flex justify-end ">
-          <button
-            onClick={() => navigate("/job/new")}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"
-          >
-            New
-          </button>
-        </div>
       </div>
     </div>
   )
