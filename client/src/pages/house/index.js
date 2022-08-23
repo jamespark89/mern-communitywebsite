@@ -69,7 +69,7 @@ export default function House() {
   return (
     <>
       <div className="bg-white">
-        <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+        <div className="max-w-2xl mx-auto py-16 px-4 sm:py-10 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="flex justify-end ">
             <button
               onClick={() => navigate("/house/new")}
@@ -106,17 +106,17 @@ export default function House() {
                         {house.address}
                       </Link>
                     </h3>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <div className="mt-1 text-sm text-gray-500">
                       {house.gender === "male" ? (
-                        <p className="text-blue-500">
+                        <span className="text-blue-500">
                           Male
-                        </p>
+                        </span>
                       ) : (
-                        <p className="text-red-400">
+                        <span className="text-red-400">
                           Female
-                        </p>
+                        </span>
                       )}
-                    </p>
+                    </div>
                     <p className="mt-1 text-sm text-gray-500">
                       {house.bedtype}
                     </p>
