@@ -17,7 +17,10 @@ const getHouses = asyncHandler(async (req, res) => {
 // @route  POST /api/houses
 // @access Private
 const setHouse = asyncHandler(async (req, res) => {
-  if (!req.body.username) {
+  const houseImageFilesPath = req.files.map(
+    (item) => item.path
+  )
+  if (!req.user.username) {
     res.status(401)
     throw new Error("Please login first")
   }
@@ -30,16 +33,19 @@ const setHouse = asyncHandler(async (req, res) => {
     throw new Error("Please add a content")
   }
   const house = await House.create({
-    username: req.body.username,
+    username: req.user.username,
     streetAddress: req.body.streetAddress,
-    city: req.body.contents,
+    city: req.body.city,
     state: req.body.state,
     zip: req.body.zip,
     totalBedrooms: req.body.totalBedrooms,
     totalBathrooms: req.body.totalBathrooms,
     bedType: req.body.bedType,
     contents: req.body.contents,
-    author: req.user._id
+    price: req.body.price,
+    gender: req.body.gender,
+    author: req.user._id,
+    houseImage: houseImageFilesPath
   })
   res.status(200).json(house)
 })

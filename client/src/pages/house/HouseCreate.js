@@ -1,6 +1,77 @@
+import { useEffect, useState } from "react"
+import houseDataService from "../../services/house"
+import { useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+
 function HouseCreate() {
+  const { user } = useSelector((state) => state.auth)
+  const [images, setImages] = useState([])
+  const [imageURLs, setImageURLs] = useState([])
+  const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    username: user.username,
+    streetAddress: "",
+    city: "",
+    state: "",
+    zip: "",
+    totalBedrooms: "1",
+    totalBathrooms: "1",
+    bedType: "Single",
+    gender: "Male",
+    price: "",
+    contents: "",
+    houseImage: ""
+  })
+  const onImageChange = (e) => {
+    setImages((prev) => [...prev, e.target.files[0]])
+  }
+  const onChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+  }
+  const handleFormSubmittion = (e) => {
+    e.preventDefault()
+    const updatedFormData = new FormData()
+    images.forEach((image) =>
+      updatedFormData.append("image", image)
+    )
+    updatedFormData.append(
+      "streetAddress",
+      formData.streetAddress
+    )
+    updatedFormData.append("city", formData.city)
+    updatedFormData.append("state", formData.state)
+    updatedFormData.append("zip", formData.zip)
+    updatedFormData.append(
+      "totalBedrooms",
+      formData.totalBedrooms
+    )
+    updatedFormData.append(
+      "totalBathrooms",
+      formData.totalBathrooms
+    )
+    updatedFormData.append("bedType", formData.bedType)
+    updatedFormData.append("contents", formData.contents)
+    updatedFormData.append("gender", formData.gender)
+    updatedFormData.append("price", formData.price)
+    houseDataService
+      .createHouse(updatedFormData)
+      .then((res) => {
+        if (res.status === 200) navigate("/house")
+      })
+  }
+  useEffect(() => {
+    if (images.length < 1) return
+    const newImageUrls = []
+    images.forEach((image) =>
+      newImageUrls.push(URL.createObjectURL(image))
+    )
+    setImageURLs(newImageUrls)
+  }, [images])
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto mb-10">
       <div className="hidden sm:block" aria-hidden="true">
         <div className="py-5">
           <div className="border-t border-gray-200" />
@@ -20,7 +91,11 @@ function HouseCreate() {
             </div>
           </div>
           <div className="mt-5 md:mt-0 md:col-span-2">
-            <form action="#" method="POST">
+            <form
+              encType="multipart/form-data"
+              onSubmit={handleFormSubmittion}
+              id="form"
+            >
               <div className="shadow overflow-hidden sm:rounded-md">
                 <div className="px-4 py-5 bg-white sm:p-6">
                   <div className="grid grid-cols-6 gap-6">
@@ -33,9 +108,11 @@ function HouseCreate() {
                       </label>
                       <input
                         type="text"
-                        name="street-address"
-                        id="street-address"
+                        name="streetAddress"
+                        id="streetAddress"
+                        value={formData.streetAddress}
                         autoComplete="street-address"
+                        onChange={onChange}
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
@@ -51,6 +128,8 @@ function HouseCreate() {
                         type="text"
                         name="city"
                         id="city"
+                        value={formData.city}
+                        onChange={onChange}
                         autoComplete="address-level2"
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
@@ -65,9 +144,11 @@ function HouseCreate() {
                       </label>
                       <input
                         type="text"
-                        name="region"
-                        id="region"
+                        name="state"
+                        id="state"
+                        value={formData.state}
                         autoComplete="address-level1"
+                        onChange={onChange}
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
@@ -81,9 +162,11 @@ function HouseCreate() {
                       </label>
                       <input
                         type="text"
-                        name="postal-code"
-                        id="postal-code"
+                        name="zip"
+                        id="zip"
+                        value={formData.zip}
                         autoComplete="postal-code"
+                        onChange={onChange}
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
                     </div>
@@ -98,6 +181,8 @@ function HouseCreate() {
                       <select
                         id="totalBedrooms"
                         name="totalBedrooms"
+                        onChange={onChange}
+                        value={formData.totalBedrooms}
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
                         <option>1</option>
@@ -119,6 +204,8 @@ function HouseCreate() {
                       <select
                         id="totalBathrooms"
                         name="totalBathrooms"
+                        onChange={onChange}
+                        value={formData.totalBathrooms}
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
                         <option>1</option>
@@ -138,6 +225,8 @@ function HouseCreate() {
                       <select
                         id="bedType"
                         name="bedType"
+                        onChange={onChange}
+                        value={formData.bedType}
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
                         <option>Single</option>
@@ -147,6 +236,42 @@ function HouseCreate() {
                       </select>
                     </div>
 
+                    <div className="col-span-6 sm:col-span-3">
+                      <label
+                        htmlFor="gender"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Gender
+                      </label>
+                      <select
+                        id="gender"
+                        name="gender"
+                        onChange={onChange}
+                        value={formData.gender}
+                        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                      >
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Any</option>
+                      </select>
+                    </div>
+
+                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                      <label
+                        htmlFor="price"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Price
+                      </label>
+                      <input
+                        type="text"
+                        name="price"
+                        id="price"
+                        value={formData.price}
+                        onChange={onChange}
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                    </div>
                     <div className="col-span-6 sm:col-span-6">
                       <label
                         htmlFor="contents"
@@ -159,8 +284,33 @@ function HouseCreate() {
                         id="contents"
                         rows="20"
                         name="contents"
+                        value={formData.contents}
+                        onChange={onChange}
                         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
+                    </div>
+                    <div className="col-span-6 sm:col-span-6">
+                      <label
+                        htmlFor="image"
+                        className="block text-sm font-medium text-gray-700"
+                      >
+                        Image Upload
+                      </label>
+                      <input
+                        type="file"
+                        name="image"
+                        multiple
+                        accept=".png, .jpg, .jpeg"
+                        onChange={onImageChange}
+                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                      />
+                      {imageURLs.map((imageSrc, index) => (
+                        <img
+                          key={index}
+                          src={imageSrc}
+                          alt={imageSrc}
+                        />
+                      ))}
                     </div>
                   </div>
                 </div>

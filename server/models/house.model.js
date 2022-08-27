@@ -15,9 +15,15 @@ const houseSchema = new Schema(
     totalBathrooms: { type: String, required: true },
     bedType: { type: String, required: true },
     contents: { type: String, required: true },
+    price: { type: String, require: true },
+    gender: { type: String, require: true },
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",
+      required: true
+    },
+    houseImage: {
+      type: [],
       required: true
     }
   },

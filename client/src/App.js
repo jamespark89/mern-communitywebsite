@@ -62,11 +62,13 @@ function App() {
           exact
           element={<HouseShow />}
         />
-        <Route
-          path="/house/new"
-          exact
-          element={<HouseCreate />}
-        />
+        <Route element={<PrivateRoutes />}>
+          <Route
+            path="/house/new"
+            exact
+            element={<HouseCreate />}
+          />
+        </Route>
         <Route
           path="/house/edit/:id"
           exact
