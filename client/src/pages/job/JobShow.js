@@ -17,15 +17,9 @@ export default function _id() {
     date: ""
   })
   const fetchData = async () => {
-    jobDataService.getById(id).then((res) =>
-      setData({
-        username: res.data.username,
-        title: res.data.title,
-        contents: res.data.contents,
-        author: res.data.author,
-        date: res.data.createdAt
-      })
-    )
+    jobDataService
+      .getById(id)
+      .then((res) => setData(res.data))
   }
   const openModal = () => {
     setOpen(true)
@@ -39,6 +33,7 @@ export default function _id() {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  console.log(data)
   return (
     <div>
       <Modal
@@ -53,7 +48,7 @@ export default function _id() {
           </li>
           <li className="w-full h-8 flex justify-between items-center bg-gray-200">
             <span>😃{data.username}</span>
-            <span>🕰{data.date?.slice(5, 10)}</span>
+            <span>🕰{data.createdAt?.slice(5, 10)}</span>
           </li>
           <li className="w-full h-96 ">{data.contents}</li>
         </div>

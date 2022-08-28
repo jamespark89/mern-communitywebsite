@@ -9,3 +9,7 @@ body {
 li {
   list-style: none;
 }
+
+select:invalid {
+  color: rgb(167, 167, 167);
+}

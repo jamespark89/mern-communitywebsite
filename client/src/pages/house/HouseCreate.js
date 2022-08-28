@@ -14,16 +14,17 @@ function HouseCreate() {
     city: "",
     state: "",
     zip: "",
-    totalBedrooms: "1",
-    totalBathrooms: "1",
-    bedType: "Single",
-    gender: "Male",
+    totalBedrooms: "",
+    totalBathrooms: "",
+    bedType: "",
+    gender: "",
     price: "",
     contents: "",
     houseImage: ""
   })
   const onImageChange = (e) => {
-    setImages((prev) => [...prev, e.target.files[0]])
+    e.target.files[0] &&
+      setImages((prev) => [...prev, e.target.files[0]])
   }
   const onChange = (e) => {
     setFormData((prev) => ({
@@ -63,6 +64,7 @@ function HouseCreate() {
       })
   }
   useEffect(() => {
+    console.log(images)
     if (images.length < 1) return
     const newImageUrls = []
     images.forEach((image) =>
@@ -183,8 +185,12 @@ function HouseCreate() {
                         name="totalBedrooms"
                         onChange={onChange}
                         value={formData.totalBedrooms}
+                        required
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
+                        <option value="" disabled hidden>
+                          Bedrooms
+                        </option>
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -206,8 +212,12 @@ function HouseCreate() {
                         name="totalBathrooms"
                         onChange={onChange}
                         value={formData.totalBathrooms}
+                        required
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
+                        <option value="" disabled hidden>
+                          Bathrooms
+                        </option>
                         <option>1</option>
                         <option>2</option>
                         <option>3</option>
@@ -227,8 +237,12 @@ function HouseCreate() {
                         name="bedType"
                         onChange={onChange}
                         value={formData.bedType}
+                        required
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
+                        <option value="" disabled hidden>
+                          Bed Types
+                        </option>
                         <option>Single</option>
                         <option>Double</option>
                         <option>Bunk</option>
@@ -248,8 +262,12 @@ function HouseCreate() {
                         name="gender"
                         onChange={onChange}
                         value={formData.gender}
+                        required
                         className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                       >
+                        <option value="" disabled hidden>
+                          Gender Preference
+                        </option>
                         <option>Male</option>
                         <option>Female</option>
                         <option>Any</option>
@@ -302,18 +320,21 @@ function HouseCreate() {
                         multiple
                         accept=".png, .jpg, .jpeg"
                         onChange={onImageChange}
-                        className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
                       />
+                    </div>
+                    <div className="w-52">
                       {imageURLs.map((imageSrc, index) => (
                         <img
                           key={index}
                           src={imageSrc}
                           alt={imageSrc}
+                          className="w-full"
                         />
                       ))}
                     </div>
                   </div>
                 </div>
+
                 <div className="px-4 py-3 bg-gray-50 text-right sm:px-6">
                   <button
                     type="submit"

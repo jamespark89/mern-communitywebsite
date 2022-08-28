@@ -1,5 +1,9 @@
+import { useParams } from "react-router-dom"
+
 function HouseEdit() {
-  return <div>HouseEdit</div>
+  const { id } = useParams()
+
+  return <div>HouseEdit{id}</div>
 }
 
 export default HouseEdit

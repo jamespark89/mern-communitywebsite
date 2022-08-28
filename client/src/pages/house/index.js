@@ -64,15 +64,17 @@ export default function House() {
                           {house.streetAddress}
                         </Link>
                       </h3>
-                      <div className="mt-1 text-sm text-gray-500">
+                      <div className="mt-1 text-sm">
                         {house.gender === "Male" ? (
                           <span className="text-blue-500">
                             Male
                           </span>
-                        ) : (
+                        ) : house.gender === "Female" ? (
                           <span className="text-red-400">
                             Female
                           </span>
+                        ) : (
+                          <span>Any</span>
                         )}
                       </div>
                       <p className="mt-1 text-sm text-gray-500">
