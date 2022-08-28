@@ -39,8 +39,8 @@ function HouseShow() {
       <div>
         {data.city}, {data.state}, {data.zip}
       </div>
-      <div className="mt-5 w-fit  flex items-center">
-        <Carousel data={data.houseImage} />
+      <div className="w-full flex justify-center">
+        <Carousel images={data.houseImage} />
       </div>
       <div>
         <div className="flex flex-col border-b-2 my-5 pb-5">
