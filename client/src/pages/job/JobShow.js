@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom"
 import jobDataService from "../../services/job"
 import Modal from "../../components/Modal"
 import { useSelector } from "react-redux"
+import { Link } from "react-router-dom"
 
 export default function _id() {
   const { id } = useParams()
@@ -33,7 +34,6 @@ export default function _id() {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  console.log(data)
   return (
     <div>
       <Modal
@@ -55,11 +55,11 @@ export default function _id() {
         {!user || user?._id !== data?.author?._id ? null : (
           <>
             <div className="flex justify-end">
-              <a href={`/job/edit/${id}`}>
+              <Link to={`/job/edit/${id}`}>
                 <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1">
                   Edit
                 </button>
-              </a>
+              </Link>
               <button
                 onClick={openModal}
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-1"

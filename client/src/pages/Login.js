@@ -8,7 +8,7 @@ export default function Login() {
     )
   }
   return (
-    <div className="flex justify-center mt-20">
+    <div className="flex justify-center pt-20 h-screen">
       <GoogleButton onClick={handleGoogleLogin} />
     </div>
   )

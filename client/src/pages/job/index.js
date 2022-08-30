@@ -22,7 +22,7 @@ export default function Job() {
   }, [])
 
   return (
-    <div className="md:max-w-fit xs:w-11/12 mx-auto mt-10">
+    <div className="md:max-w-fit xs:w-11/12 mx-auto my-10">
       <div className="flex justify-end ">
         <button
           onClick={() => navigate("/job/new")}

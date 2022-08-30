@@ -7,6 +7,26 @@ module.exports = {
     screens: {
       xs: "375px",
       ...defaultTheme.screens
+    },
+    extend: {
+      animation: {
+        bounce: "onebounce 0.5s ease-in-out 1",
+        bounce2: "onebounce 0.5s 0.3s ease-in-out 1"
+      },
+      keyframes: {
+        onebounce: {
+          "0%": {
+            transform: "translateY(0%)"
+          },
+          "50%": {
+            transform: "translateY(-25%)"
+          },
+          "100%": {
+            transform: "translateY(0)"
+          }
+          // "100%": { transform: "translateY(-25%)" }
+        }
+      }
     }
   },
   plugins: [

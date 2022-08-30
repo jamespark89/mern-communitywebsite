@@ -18,6 +18,7 @@ import PrivateRoutes from "./utils/PrivateRoutes"
 import HouseShow from "./pages/house/HouseShow"
 import HouseCreate from "./pages/house/HouseCreate"
 import HouseEdit from "./pages/house/HouseEdit"
+import Footer from "./components/Footer"
 
 function App() {
   const dispatch = useDispatch()
@@ -75,6 +76,7 @@ function App() {
           element={<HouseEdit />}
         />
       </Routes>
+      <Footer />
     </Router>
   )
 }
