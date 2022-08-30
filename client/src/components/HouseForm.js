@@ -216,7 +216,7 @@ function HouseForm({
                           Price
                         </label>
                         <input
-                          type="text"
+                          type="number"
                           name="price"
                           id="price"
                           value={formData.price}
