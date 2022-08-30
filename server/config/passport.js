@@ -17,35 +17,24 @@ passport.use(
     {
       clientID: process.env.CLIENT_ID,
       clientSecret: process.env.CLIENT_SECRET,
-      callbackURL: "/auth/google/callback",
-      scope: ["profile", "email"],
-      state: true
+      callbackURL: "/auth/google/callback"
     },
-    function verify(
-      accessToken,
-      refreshToken,
-      profile,
-      cb
-    ) {
+    function (accessToken, refreshToken, profile, cb) {
       // Check if user exists
       User.findOne(
         { googleId: profile.id },
-        async (err, user) => {
+        function (err, user) {
           if (user) {
             return cb(null, user)
-          } else {
-            //if user doesn't exist
-            const newUser = await registerGoogleUser(
-              profile
-            )
-            console.log(newUser)
-            User.findOne(
-              { googleId: profile.id },
-              (err, user) => {
-                return cb(null, user)
-              }
-            )
           }
+          //if user doesn't exist
+          const newUser = registerGoogleUser(profile)
+          User.findOne(
+            { googleId: profile.id },
+            (err, user) => {
+              return cb(null, user)
+            }
+          )
         }
       )
     }
