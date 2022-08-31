@@ -3,7 +3,7 @@ import GoogleButton from "react-google-button"
 export default function Login() {
   const handleGoogleLogin = async () => {
     window.open(
-      "http://localhost:3001/auth/google/login",
+      `${process.env.REACT_APP_SERVER_URL}/auth/google/login`,
       "_self"
     )
   }

@@ -19,7 +19,9 @@ export default function Navbar() {
   ]
   const getMe = async () => {
     axios
-      .get("http://localhost:3001/api/users/me")
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}/api/users/me`
+      )
       .then((res) => console.log(res))
   }
   function classNames(...classes) {

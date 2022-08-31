@@ -1,6 +1,7 @@
 require("dotenv").config()
 // index.js
 const express = require("express")
+const path = require("path")
 const app = express()
 const cors = require("cors")
 const passport = require("./config/passport")
@@ -51,8 +52,31 @@ app.use("/api/jobs", require("./routes/jobs"))
 app.use("/api/houses", require("./routes/houses"))
 app.use("/auth", require("./routes/auth"))
 app.use("/uploads", express.static("uploads"))
+
+//serve frontend
+if (process.env.NODE_ENV === "production") {
+  app.use(
+    express.static(path.join(__dirname, "../client/build"))
+  )
+  app.get("*", (req, res) =>
+    res.sendFile(
+      path.resolve(
+        __dirname,
+        "../",
+        "client",
+        "build",
+        "index.html"
+      )
+    )
+  )
+} else {
+  app.get("/", (req, res) =>
+    res.send("Please set to production")
+  )
+}
+
 app.use(errorHandler)
-var port = 3001
+var port = process.env.PORT || 4000
 app.listen(port, function () {
   console.log("server on! http://localhost:" + port)
 })

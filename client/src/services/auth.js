@@ -2,7 +2,9 @@ import axios from "axios"
 
 const getLoginUser = async () => {
   return await axios
-    .get("http://localhost:3001/auth/login/success")
+    .get(
+      `${process.env.REACT_APP_SERVER_URL}/auth/login/success`
+    )
     .then((res) => {
       if (res.status === 200) {
         return res.data.user
@@ -11,7 +13,9 @@ const getLoginUser = async () => {
     .catch(() => null)
 }
 const logout = async () => {
-  axios.get("http://localhost:3001/auth/logout")
+  axios.get(
+    `${process.env.REACT_APP_SERVER_URL}/auth/logout`
+  )
 }
 
 const authService = {
