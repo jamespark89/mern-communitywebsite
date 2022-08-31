@@ -1,6 +1,5 @@
 import { Disclosure } from "@headlessui/react"
 import { MenuIcon, XIcon } from "@heroicons/react/outline"
-import axios from "axios"
 import { useDispatch, useSelector } from "react-redux"
 import { NavLink } from "react-router-dom"
 import { logout } from "../redux/authSlice"
@@ -17,13 +16,6 @@ export default function Navbar() {
       current: false
     }
   ]
-  const getMe = async () => {
-    axios
-      .get(
-        `${process.env.REACT_APP_SERVER_URL}/api/users/me`
-      )
-      .then((res) => console.log(res))
-  }
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ")
   }
@@ -87,10 +79,7 @@ export default function Navbar() {
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {user ? (
                   <>
-                    <span
-                      onClick={getMe}
-                      className="text-white p-3"
-                    >
+                    <span className="text-white p-3">
                       {user.username}
                     </span>
 
