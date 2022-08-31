@@ -17,8 +17,9 @@ const getHouses = asyncHandler(async (req, res) => {
 // @route  POST /api/houses
 // @access Private
 const setHouse = asyncHandler(async (req, res) => {
+  console.log(req.files)
   const houseImageFilesPath = req.files.map(
-    (item) => item.path
+    (item) => item.originalname
   )
   if (!req.user.username) {
     res.status(401)

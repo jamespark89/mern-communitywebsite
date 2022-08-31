@@ -42,7 +42,7 @@ function HouseEdit() {
         houseImage: res.data.houseImage
       })
       res.data.houseImage.map((imagePath) =>
-        urlToObject(imagePath).then((res) =>
+        urlToObject(`uploads/${imagePath}`).then((res) =>
           setImages((prev) => [...prev, res])
         )
       )

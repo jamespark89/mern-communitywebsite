@@ -41,7 +41,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(
   cors({
     credentials: true,
-    origin: [process.env.BASE_URL],
+    origin: ["http://localhost:3000"],
     methods: ["GET,PUT,POST,DELETE,PATCH,OPTIONS"]
   })
 )
@@ -51,9 +51,12 @@ app.use("/api/users", require("./routes/users"))
 app.use("/api/jobs", require("./routes/jobs"))
 app.use("/api/houses", require("./routes/houses"))
 app.use("/auth", require("./routes/auth"))
-app.use("/uploads", express.static("uploads"))
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "uploads"))
+)
 
-//serve frontend
+// serve frontend
 if (process.env.NODE_ENV === "production") {
   app.use(
     express.static(path.join(__dirname, "../client/build"))

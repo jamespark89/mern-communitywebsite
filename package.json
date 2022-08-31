@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node server/index.js",
     "server": "nodemon server/index.js",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
@@ -28,5 +29,8 @@
   },
   "engines": {
     "node": "16.x"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
