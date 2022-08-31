@@ -1,6 +1,7 @@
 const House = require("../models/house.model")
 const asyncHandler = require("express-async-handler")
-const User = require("../models/user.model")
+const fs = require("fs")
+const path = require("path")
 // @desc   Get houses
 // @route  GET /api/houses
 // @access Private
@@ -17,9 +18,8 @@ const getHouses = asyncHandler(async (req, res) => {
 // @route  POST /api/houses
 // @access Private
 const setHouse = asyncHandler(async (req, res) => {
-  console.log(req.files)
   const houseImageFilesPath = req.files.map(
-    (item) => item.originalname
+    (item) => item.filename
   )
   if (!req.user.username) {
     res.status(401)
@@ -78,6 +78,16 @@ const deleteHouse = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error("house not found")
   }
+  try {
+    house.houseImage.map((imagePath) =>
+      fs.unlinkSync(
+        path.join(__dirname, `../uploads/${imagePath}`)
+      )
+    )
+  } catch (err) {
+    console.log("File not found")
+  }
+
   await house.remove()
   res.status(200).json({ id: req.params.id })
 })
