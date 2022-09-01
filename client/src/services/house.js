@@ -15,7 +15,11 @@ class houseDataService {
     })
   }
   async updateHouse(data, id) {
-    return await axios.put(`/houses/${id}`, data)
+    return await axios.put(`/api/houses/${id}`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    })
   }
   async deleteHouse(id) {
     return await axios.delete(`/api/houses/${id}`)

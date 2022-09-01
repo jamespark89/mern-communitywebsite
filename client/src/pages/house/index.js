@@ -46,8 +46,15 @@ export default function House() {
                 >
                   <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-lg overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                     <img
-                      src={`${process.env.REACT_APP_SERVER_URL}/uploads/${house.houseImage[0]}`}
-                      alt={house.houseImage[0].toString()}
+                      src={
+                        house.houseImage[0]
+                          ? `${process.env.REACT_APP_SERVER_URL}/images/${house.houseImage[0]}`
+                          : "Hero.png"
+                      }
+                      onError={(e) =>
+                        (e.target.style.display = "none")
+                      }
+                      alt={house.houseImage[0]?.toString()}
                       className="w-full h-full object-center object-cover lg:w-full lg:h-full"
                     />
                   </div>

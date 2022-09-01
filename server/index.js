@@ -11,12 +11,12 @@ const connectDB = require("./config/db")
 const {
   errorHandler
 } = require("./middleware/errorMiddleware")
-
+const { getFileStream } = require("./middleware/s3")
 connectDB()
 //Passport
 app.use(
   session({
-    secret: "MySecret",
+    secret: process.env.MY_SECRET,
     resave: false,
     cookie: {
       secure: false
@@ -55,7 +55,12 @@ app.use(
   "/uploads",
   express.static(path.join(__dirname, "uploads"))
 )
+app.get("/images/:key", (req, res) => {
+  const key = req.params.key
+  const readStream = getFileStream(key)
 
+  readStream.pipe(res)
+})
 // serve frontend
 if (process.env.NODE_ENV === "production") {
   app.use(

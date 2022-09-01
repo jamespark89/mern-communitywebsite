@@ -97,7 +97,7 @@ export default function Carousel({ images }) {
               <img
                 src={
                   process.env.REACT_APP_SERVER_URL +
-                  "/uploads/" +
+                  "/images/" +
                   img
                 }
                 alt=""

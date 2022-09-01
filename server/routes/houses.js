@@ -27,6 +27,7 @@ router.put(
   "/:id",
   util.isLoggedin,
   util.checkPermission,
+  upload.array("image"),
   updateHouse
 )
 

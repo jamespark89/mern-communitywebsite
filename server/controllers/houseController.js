@@ -2,6 +2,10 @@ const House = require("../models/house.model")
 const asyncHandler = require("express-async-handler")
 const fs = require("fs")
 const path = require("path")
+const {
+  uploadFile,
+  deleteFile
+} = require("../middleware/s3")
 // @desc   Get houses
 // @route  GET /api/houses
 // @access Private
@@ -18,9 +22,7 @@ const getHouses = asyncHandler(async (req, res) => {
 // @route  POST /api/houses
 // @access Private
 const setHouse = asyncHandler(async (req, res) => {
-  const houseImageFilesPath = req.files.map(
-    (item) => item.filename
-  )
+  const files = req.files
   if (!req.user.username) {
     res.status(401)
     throw new Error("Please login first")
@@ -33,6 +35,15 @@ const setHouse = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error("Please add a content")
   }
+  //upload image files to S3 and then delete the temp files
+  const houseImageFiles = await Promise.all(
+    files.map(async (file) => {
+      const result = await uploadFile(file)
+      fs.unlinkSync(`${file.path}`)
+      return result.Key
+    })
+  )
+
   const house = await House.create({
     username: req.user.username,
     streetAddress: req.body.streetAddress,
@@ -46,7 +57,7 @@ const setHouse = asyncHandler(async (req, res) => {
     price: req.body.price,
     gender: req.body.gender,
     author: req.user._id,
-    houseImage: houseImageFilesPath
+    houseImage: houseImageFiles
   })
   res.status(200).json(house)
 })
@@ -60,6 +71,19 @@ const updateHouse = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error("House not found")
   }
+  await Promise.all(
+    house.houseImage.map(async (fileKey) => {
+      await deleteFile(fileKey)
+    })
+  )
+  await Promise.all(
+    (req.body.houseImage = files.map(async (file) => {
+      const result = await uploadFile(file)
+      fs.unlinkSync(`${file.path}`)
+      return result.Key
+    }))
+  )
+
   const updatedHouse = await House.findByIdAndUpdate(
     req.params.id,
     req.body,
@@ -78,16 +102,11 @@ const deleteHouse = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error("house not found")
   }
-  try {
-    house.houseImage.map((imagePath) =>
-      fs.unlinkSync(
-        path.join(__dirname, `../uploads/${imagePath}`)
-      )
-    )
-  } catch (err) {
-    console.log("File not found")
-  }
-
+  await Promise.all(
+    house.houseImage.map(async (fileKey) => {
+      await deleteFile(fileKey)
+    })
+  )
   await house.remove()
   res.status(200).json({ id: req.params.id })
 })

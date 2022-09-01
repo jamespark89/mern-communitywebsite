@@ -28,7 +28,11 @@ router.get(
   // Successful authentication, redirect home.
   (req, res) => {
     console.log("login")
-    res.redirect(process.env.BASE_URL)
+    if (process.env.NODE_ENV === "production") {
+      res.redirect("/")
+    } else {
+      res.redirect(process.env.BASE_URL)
+    }
   }
 )
 

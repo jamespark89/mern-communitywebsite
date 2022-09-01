@@ -42,7 +42,7 @@ function HouseEdit() {
         houseImage: res.data.houseImage
       })
       res.data.houseImage.map((imagePath) =>
-        urlToObject(`uploads/${imagePath}`).then((res) =>
+        urlToObject(`images/${imagePath}`).then((res) =>
           setImages((prev) => [...prev, res])
         )
       )
@@ -98,7 +98,7 @@ function HouseEdit() {
     updatedFormData.append("gender", formData.gender)
     updatedFormData.append("price", formData.price)
     houseDataService
-      .createHouse(updatedFormData)
+      .updateHouse(updatedFormData, id)
       .then((res) => {
         if (res.status === 200) navigate("/house")
       })
