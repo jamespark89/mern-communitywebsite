@@ -35,7 +35,6 @@ function getFileStream(fileKey) {
 
 //delte a file from S3
 function deleteFile(fileKey) {
-  console.log("delete" + fileKey)
   const deleteParams = {
     Bucket: bucketName,
     Key: fileKey
