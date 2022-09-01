@@ -11,6 +11,7 @@ function HouseEdit() {
   const [images, setImages] = useState([])
   const [imageURLs, setImageURLs] = useState([])
   const navigate = useNavigate()
+  const [prevImageKey, setPrevImageKey] = useState([])
   const [formData, setFormData] = useState({
     username: user.username,
     streetAddress: "",
@@ -41,6 +42,7 @@ function HouseEdit() {
         contents: res.data.contents,
         houseImage: res.data.houseImage
       })
+      setPrevImageKey([...res.data.houseImage])
       res.data.houseImage.map((imagePath) =>
         urlToObject(`images/${imagePath}`).then((res) =>
           setImages((prev) => [...prev, res])
@@ -97,6 +99,10 @@ function HouseEdit() {
     updatedFormData.append("contents", formData.contents)
     updatedFormData.append("gender", formData.gender)
     updatedFormData.append("price", formData.price)
+    prevImageKey.forEach((key) =>
+      updatedFormData.append("prevImageKey", key)
+    )
+
     houseDataService
       .updateHouse(updatedFormData, id)
       .then((res) => {

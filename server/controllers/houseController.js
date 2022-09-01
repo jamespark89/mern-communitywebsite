@@ -6,6 +6,7 @@ const {
   uploadFile,
   deleteFile
 } = require("../middleware/s3")
+
 // @desc   Get houses
 // @route  GET /api/houses
 // @access Private
@@ -66,27 +67,44 @@ const setHouse = asyncHandler(async (req, res) => {
 // @route  PUT /api/houses/:id
 // @access Private
 const updateHouse = asyncHandler(async (req, res) => {
+  const files = req.files
   const house = await House.findById(req.params.id)
   if (!house) {
     res.status(400)
     throw new Error("House not found")
   }
+  //delete prev file images from S3
   await Promise.all(
-    house.houseImage.map(async (fileKey) => {
+    req.body.prevImageKey.map(async (fileKey) => {
       await deleteFile(fileKey)
     })
   )
-  await Promise.all(
-    (req.body.houseImage = files.map(async (file) => {
+  //upload new file images to S3
+  const houseImageFiles = await Promise.all(
+    files.map(async (file) => {
       const result = await uploadFile(file)
       fs.unlinkSync(`${file.path}`)
       return result.Key
-    }))
+    })
   )
-
+  //update DB
   const updatedHouse = await House.findByIdAndUpdate(
     req.params.id,
-    req.body,
+    {
+      username: req.user.username,
+      streetAddress: req.body.streetAddress,
+      city: req.body.city,
+      state: req.body.state,
+      zip: req.body.zip,
+      totalBedrooms: req.body.totalBedrooms,
+      totalBathrooms: req.body.totalBathrooms,
+      bedType: req.body.bedType,
+      contents: req.body.contents,
+      price: req.body.price,
+      gender: req.body.gender,
+      author: req.user._id,
+      houseImage: houseImageFiles
+    },
     { new: true }
   )
 
