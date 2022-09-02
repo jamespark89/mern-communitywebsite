@@ -12,7 +12,7 @@ const s3 = new S3({
   secretAccessKey
 })
 //uploas a file to s3
-function uploadFile(file) {
+async function uploadFile(file) {
   const fileStream = fs.createReadStream(file.path)
 
   const uploadParams = {
@@ -20,27 +20,35 @@ function uploadFile(file) {
     Body: fileStream,
     Key: file.filename
   }
-  return s3.upload(uploadParams).promise()
+  return await s3.upload(uploadParams).promise()
 }
 
 //downloads a file from s3
-function getFileStream(fileKey) {
+async function getFileStream(fileKey) {
   const downloadParams = {
     Key: fileKey,
     Bucket: bucketName
   }
-
-  return s3.getObject(downloadParams).createReadStream()
+  try {
+    const data = await s3
+      .getObject(downloadParams)
+      .createReadStream()
+    return data
+  } catch (e) {
+    throw new Error(
+      `Could not retrieve file from S3: ${e.message}`
+    )
+  }
 }
 
 //delte a file from S3
-function deleteFile(fileKey) {
+async function deleteFile(fileKey) {
   const deleteParams = {
     Bucket: bucketName,
     Key: fileKey
   }
 
-  return s3.deleteObject(deleteParams).promise()
+  return await s3.deleteObject(deleteParams).promise()
 }
 
 module.exports = { uploadFile, getFileStream, deleteFile }

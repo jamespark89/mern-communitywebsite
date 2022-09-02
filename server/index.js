@@ -55,10 +55,9 @@ app.use(
   "/uploads",
   express.static(path.join(__dirname, "uploads"))
 )
-app.get("/images/:key", (req, res) => {
+app.get("/images/:key", async (req, res) => {
   const key = req.params.key
-  const readStream = getFileStream(key)
-
+  const readStream = await getFileStream(key)
   readStream.pipe(res)
 })
 // serve frontend
