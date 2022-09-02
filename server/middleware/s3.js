@@ -30,10 +30,17 @@ async function getFileStream(fileKey) {
     Bucket: bucketName
   }
   try {
-    const data = await s3
-      .getObject(downloadParams)
+    const request = s3.getObject(downloadParams)
+    return request
       .createReadStream()
-    return data
+      .on("error", (e) => {
+        throw new Error(
+          `Could not createReadStream from S3: ${e.message}`
+        )
+      })
+      .on("end", () => {
+        request.abort()
+      })
   } catch (e) {
     throw new Error(
       `Could not retrieve file from S3: ${e.message}`
