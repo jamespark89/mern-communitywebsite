@@ -9,7 +9,8 @@ const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
 const s3 = new S3({
   region,
   accessKeyId,
-  secretAccessKey
+  secretAccessKey,
+  s3ForcePathStyle: true
 })
 //uploas a file to s3
 async function uploadFile(file) {
@@ -31,7 +32,6 @@ async function getFileStream(fileKey) {
   }
   try {
     const request = s3.getObject(downloadParams)
-    console.log(request)
     const readStream = request
       .createReadStream()
       .on("error", (e) => {
