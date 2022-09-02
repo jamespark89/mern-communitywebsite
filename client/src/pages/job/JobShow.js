@@ -4,12 +4,14 @@ import jobDataService from "../../services/job"
 import Modal from "../../components/Modal"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
+import LoadingSpinner from "../../components/LoadingSpinner"
 
 export default function _id() {
   const { id } = useParams()
   const { user } = useSelector((state) => state.auth)
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState({
     username: "",
     title: "",
@@ -18,15 +20,19 @@ export default function _id() {
     date: ""
   })
   const fetchData = async () => {
+    setLoading(true)
     jobDataService
       .getById(id)
       .then((res) => setData(res.data))
+    setLoading(false)
   }
   const openModal = () => {
     setOpen(true)
   }
-  const deleteJob = () => {
+  const deleteJob = async () => {
+    setLoading(true)
     jobDataService.deleteJob(id).then((res) => {
+      setLoading(false)
       if (res.status === 200) navigate("/job")
     })
   }
@@ -34,6 +40,7 @@ export default function _id() {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  if (loading) return <LoadingSpinner />
   return (
     <div className="min-h-screen mx-5">
       <Modal

@@ -2,7 +2,7 @@ function LoadingSpinner() {
   return (
     <div
       role="status"
-      className="flex justify-center min-h-screen items-center"
+      className="flex justify-center min-h-screen mt-20"
     >
       <svg
         className="inline mr-2 w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
