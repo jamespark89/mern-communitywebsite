@@ -4,6 +4,7 @@ import houseDataService from "../../services/house"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import HouseForm from "../../components/HouseForm"
+import LoadingSpinner from "../../components/LoadingSpinner"
 
 function HouseEdit() {
   const { id } = useParams()
@@ -11,7 +12,7 @@ function HouseEdit() {
   const [images, setImages] = useState([])
   const [imageURLs, setImageURLs] = useState([])
   const navigate = useNavigate()
-  const [prevImageKey, setPrevImageKey] = useState([])
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     username: user.username,
     streetAddress: "",
@@ -27,6 +28,7 @@ function HouseEdit() {
     houseImage: []
   })
   const fetchData = async () => {
+    setLoading(true)
     await houseDataService.getById(id).then((res) => {
       setFormData({
         username: res.data.username,
@@ -42,13 +44,13 @@ function HouseEdit() {
         contents: res.data.contents,
         houseImage: res.data.houseImage
       })
-      setPrevImageKey([...res.data.houseImage])
       res.data.houseImage.map((imagePath) =>
         urlToObject(`images/${imagePath}`).then((res) =>
           setImages((prev) => [...prev, res])
         )
       )
     })
+    setLoading(false)
   }
   // Convert imgae Url to Object File
   const urlToObject = async (imagePath) => {
@@ -76,6 +78,7 @@ function HouseEdit() {
 
   const handleFormSubmittion = (e) => {
     e.preventDefault()
+    setLoading(true)
     const updatedFormData = new FormData()
     images.forEach((image) =>
       updatedFormData.append("image", image)
@@ -99,13 +102,10 @@ function HouseEdit() {
     updatedFormData.append("contents", formData.contents)
     updatedFormData.append("gender", formData.gender)
     updatedFormData.append("price", formData.price)
-    prevImageKey.forEach((key) =>
-      updatedFormData.append("prevImageKey", key)
-    )
-
     houseDataService
       .updateHouse(updatedFormData, id)
       .then((res) => {
+        setLoading(false)
         if (res.status === 200) navigate("/house")
       })
   }
@@ -123,7 +123,7 @@ function HouseEdit() {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
+  if (loading) return <LoadingSpinner />
   return (
     <HouseForm
       formData={formData}

@@ -73,12 +73,10 @@ const updateHouse = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error("House not found")
   }
+
   //delete prev file images from S3
-  await Promise.all(
-    req.body.prevImageKey.map(async (fileKey) => {
-      await deleteFile(fileKey)
-    })
-  )
+  house.houseImage.forEach((fileKey) => deleteFile(fileKey))
+
   //upload new file images to S3
   const houseImageFiles = await Promise.all(
     files.map(async (file) => {

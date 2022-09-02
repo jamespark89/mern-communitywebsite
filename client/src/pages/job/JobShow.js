@@ -35,7 +35,7 @@ export default function _id() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
-    <div>
+    <div className="min-h-screen mx-5">
       <Modal
         setOpen={setOpen}
         open={open}

@@ -3,11 +3,13 @@ import houseDataService from "../../services/house"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import HouseForm from "../../components/HouseForm"
+import LoadingSpinner from "../../components/LoadingSpinner"
 function HouseCreate() {
   const { user } = useSelector((state) => state.auth)
   const [images, setImages] = useState([])
   const [imageURLs, setImageURLs] = useState([])
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     username: user.username,
     streetAddress: "",
@@ -33,6 +35,7 @@ function HouseCreate() {
     }))
   }
   const handleFormSubmittion = (e) => {
+    setLoading(true)
     e.preventDefault()
     const updatedFormData = new FormData()
     images.forEach((image) =>
@@ -60,6 +63,7 @@ function HouseCreate() {
     houseDataService
       .createHouse(updatedFormData)
       .then((res) => {
+        setLoading(false)
         if (res.status === 200) navigate("/house")
       })
   }
@@ -71,6 +75,7 @@ function HouseCreate() {
     )
     setImageURLs(newImageUrls)
   }, [images])
+  if (loading) return <LoadingSpinner />
   return (
     <HouseForm
       formData={formData}

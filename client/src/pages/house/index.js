@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import houseDataService from "../../services/house"
 import { Link, useNavigate } from "react-router-dom"
-
+import LoadingSpinner from "../../components/LoadingSpinner"
 export default function House() {
   const navigate = useNavigate()
   const [data, setData] = useState([])
@@ -22,7 +22,7 @@ export default function House() {
   }, [])
   return (
     <>
-      <div className="bg-white">
+      <div className="bg-white min-h-screen">
         <div className="max-w-2xl mx-auto py-16 px-4 sm:py-10 sm:px-6 lg:max-w-7xl lg:px-8">
           <div className="flex justify-end ">
             <button
@@ -36,7 +36,7 @@ export default function House() {
             House List
           </h2>
           {loading ? (
-            <span>Loading...</span>
+            <LoadingSpinner />
           ) : (
             <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
               {data.map((house) => (
@@ -46,15 +46,17 @@ export default function House() {
                 >
                   <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-lg overflow-hidden group-hover:opacity-75 lg:h-80 lg:aspect-none">
                     <img
-                      src={
-                        house.houseImage[0]
-                          ? `${process.env.REACT_APP_SERVER_URL}/images/${house.houseImage[0]}`
-                          : "Hero.png"
-                      }
-                      onError={(e) =>
-                        (e.target.style.display = "none")
-                      }
-                      alt={house.houseImage[0]?.toString()}
+                      src={`${process.env.REACT_APP_SERVER_URL}/images/${house.houseImage[0]}`}
+                      onError={(e) => {
+                        if (
+                          e.target.src !==
+                          `${process.env.REACT_APP_SERVER_URL}/uploads/Hero.jpg`
+                        ) {
+                          e.target.onerror = null
+                          e.target.src = `${process.env.REACT_APP_SERVER_URL}/uploads/Hero.jpg`
+                        }
+                      }}
+                      alt={"HouseImage"}
                       className="w-full h-full object-center object-cover lg:w-full lg:h-full"
                     />
                   </div>

@@ -14,7 +14,6 @@ const s3 = new S3({
 })
 //uploas a file to s3
 async function uploadFile(file) {
-  console.log(file.path)
   const fileStream = fs.createReadStream(file.path)
 
   const uploadParams = {
@@ -35,20 +34,18 @@ async function getFileStream(fileKey) {
     const request = s3.getObject(downloadParams)
     const readStream = request
       .createReadStream()
-      .on("error", (e) => {
-        throw new Error(
-          `Could not createReadStream from S3: ${e.message}`
+      .on("error", (error) => {
+        console.log(
+          "Couldn't retrieve images",
+          error.message
         )
       })
       .on("end", () => {
         request.abort()
       })
-
     return readStream
   } catch (e) {
-    throw new Error(
-      `Could not retrieve file from S3: ${e.message}`
-    )
+    console.log(e.message)
   }
 }
 

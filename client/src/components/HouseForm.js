@@ -252,7 +252,9 @@ function HouseForm({
                           type="file"
                           name="image"
                           multiple
-                          required
+                          required={
+                            imageURLs === [] ? true : false
+                          }
                           accept=".png, .jpg, .jpeg"
                           onChange={onImageChange}
                         />

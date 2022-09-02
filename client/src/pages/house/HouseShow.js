@@ -13,6 +13,7 @@ import {
   faBathtub
 } from "@fortawesome/free-solid-svg-icons"
 import Carousel from "../../components/Carousel"
+import LoadingSpinner from "../../components/LoadingSpinner"
 
 function HouseShow() {
   const { id } = useParams()
@@ -20,32 +21,37 @@ function HouseShow() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [data, setData] = useState({})
+  const [loading, setLoading] = useState(false)
   const fetchData = async () => {
-    houseDataService.getById(id).then((res) => {
+    setLoading(true)
+    await houseDataService.getById(id).then((res) => {
       setData(res.data)
     })
+    setLoading(false)
   }
   const openModal = () => {
     setOpen(true)
   }
-  const deleteHouse = () => {
-    houseDataService.deleteHouse(id).then((res) => {
+  const deleteHouse = async () => {
+    setLoading(true)
+    await houseDataService.deleteHouse(id).then((res) => {
       if (res.status === 200) navigate("/house")
     })
+    setLoading(false)
   }
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+  if (loading) return <LoadingSpinner />
   return (
-    <>
-      {" "}
+    <div className="min-h-screen">
       <Modal
         setOpen={setOpen}
         open={open}
         deleteJob={deleteHouse}
       />
-      <div className="max-w-2xl mx-auto overflow-hidden py-16 px-4 sm:py-10 sm:px-6 lg:max-w-4xl lg:px-8">
+      <div className="min-h-screen max-w-2xl mx-auto overflow-hidden py-16 px-4 sm:py-10 sm:px-6 lg:max-w-4xl lg:px-8">
         <div className="text-xl">{data.streetAddress}</div>
         <div>
           {data.city}, {data.state}, {data.zip}
@@ -116,7 +122,7 @@ function HouseShow() {
           </>
         )}
       </div>
-    </>
+    </div>
   )
 }
 

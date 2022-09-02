@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import jobDataService from "../../services/job"
 import { Link, useNavigate } from "react-router-dom"
+import LoadingSpinner from "../../components/LoadingSpinner"
 export default function Job() {
   const navigate = useNavigate()
   const [data, setData] = useState([])
@@ -22,7 +23,7 @@ export default function Job() {
   }, [])
 
   return (
-    <div className="md:max-w-fit xs:w-11/12 mx-auto my-10">
+    <div className="min-h-screen md:max-w-fit xs:w-11/12 mx-auto my-10">
       <div className="flex justify-end ">
         <button
           onClick={() => navigate("/job/new")}
@@ -43,7 +44,7 @@ export default function Job() {
           <li className="w-32 text-center">Date</li>
         </div>
         {loading ? (
-          <span>Loading...</span>
+          <LoadingSpinner />
         ) : (
           data?.map((item, index) => (
             <div
