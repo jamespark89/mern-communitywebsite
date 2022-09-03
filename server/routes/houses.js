@@ -2,7 +2,10 @@ const router = require("express").Router()
 const util = require("../middleware/util")
 // const multer = require("multer")
 // const upload = multer({ dest: "uploads/" })
-const upload = require("../middleware/multer")
+const {
+  upload,
+  resizeImages
+} = require("../middleware/multer")
 const {
   getHouses,
   setHouse,
@@ -12,7 +15,12 @@ const {
 } = require("../controllers/houseController")
 router.get("/", getHouses)
 
-router.post("/", upload.array("image"), setHouse)
+router.post(
+  "/",
+  upload.array("image"),
+  resizeImages,
+  setHouse
+)
 
 router.get("/:id", getHouseById)
 

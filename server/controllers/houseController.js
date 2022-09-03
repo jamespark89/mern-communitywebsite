@@ -23,7 +23,8 @@ const getHouses = asyncHandler(async (req, res) => {
 // @route  POST /api/houses
 // @access Private
 const setHouse = asyncHandler(async (req, res) => {
-  const files = req.files
+  const resizedFiles = req.body.images
+  console.log(resizedFiles)
   if (!req.user.username) {
     res.status(401)
     throw new Error("Please login first")
@@ -38,7 +39,7 @@ const setHouse = asyncHandler(async (req, res) => {
   }
   //upload image files to S3 and then delete the temp files
   const houseImageFiles = await Promise.all(
-    files.map(async (file) => {
+    resizedFiles.map(async (file) => {
       const result = await uploadFile(file)
       fs.unlinkSync(`${file.path}`)
       return result.Key
