@@ -3,7 +3,10 @@ function HouseForm({
   handleFormSubmittion,
   onChange,
   onImageChange,
-  imageURLs
+  imageURLs,
+  images,
+  setImages,
+  cancelUpload
 }) {
   return (
     <div>
@@ -259,18 +262,27 @@ function HouseForm({
                           onChange={onImageChange}
                         />
                       </div>
-                      <div className="w-52">
-                        {imageURLs?.map(
-                          (imageSrc, index) => (
-                            <img
-                              key={index}
-                              src={imageSrc}
-                              alt={imageSrc}
-                              className="w-full"
-                            />
-                          )
-                        )}
-                      </div>
+
+                      {imageURLs?.map((imageSrc, index) => (
+                        <div
+                          className="h-32 flex col-span-2 overflow-hidden"
+                          key={index}
+                        >
+                          <img
+                            src={imageSrc}
+                            alt={imageSrc}
+                            className="w-full h-full object-cover"
+                          />
+                          <button
+                            onClick={(e) =>
+                              cancelUpload(e, imageSrc)
+                            }
+                            className="absolute bg-white rounded-full w-6 h-6 m-1 border-solid border border-black"
+                          >
+                            X
+                          </button>
+                        </div>
+                      ))}
                     </div>
                   </div>
 

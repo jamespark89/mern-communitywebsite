@@ -63,12 +63,20 @@ function HouseEdit() {
     })
     return file
   }
-
+  const cancelUpload = (e, imgSrc) => {
+    e.preventDefault()
+    const index = imageURLs.indexOf(imgSrc)
+    const arrayImages = [...images]
+    arrayImages.splice(index, 1)
+    setImages([...arrayImages])
+  }
   const onImageChange = (e) => {
+    const maxAllowedSize = 2 * 1024 * 1024
+    if (e.target.files[0]?.size > maxAllowedSize)
+      return alert("Max file size: 2MB!")
     e.target.files[0] &&
       setImages((prev) => [...prev, e.target.files[0]])
   }
-
   const onChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -111,7 +119,6 @@ function HouseEdit() {
   }
 
   useEffect(() => {
-    if (images.length < 1) return
     const newImageUrls = []
     images?.forEach((image) =>
       newImageUrls.push(URL.createObjectURL(image))
@@ -131,6 +138,9 @@ function HouseEdit() {
       onChange={onChange}
       onImageChange={onImageChange}
       imageURLs={imageURLs}
+      images={images}
+      setImages={setImages}
+      cancelUpload={cancelUpload}
     />
   )
 }
