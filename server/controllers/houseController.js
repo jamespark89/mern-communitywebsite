@@ -24,7 +24,6 @@ const getHouses = asyncHandler(async (req, res) => {
 // @access Private
 const setHouse = asyncHandler(async (req, res) => {
   const resizedFiles = req.body.images
-  console.log(resizedFiles)
   if (!req.user.username) {
     res.status(401)
     throw new Error("Please login first")
@@ -37,7 +36,7 @@ const setHouse = asyncHandler(async (req, res) => {
     res.status(400)
     throw new Error("Please add a content")
   }
-  //upload image files to S3 and then delete the temp files
+  //upload resized image to S3 and then delete the temp files
   const houseImageFiles = await Promise.all(
     resizedFiles.map(async (file) => {
       const result = await uploadFile(file)
@@ -69,18 +68,19 @@ const setHouse = asyncHandler(async (req, res) => {
 // @access Private
 const updateHouse = asyncHandler(async (req, res) => {
   const files = req.files
+  const resizedFiles = req.body.images
   const house = await House.findById(req.params.id)
   if (!house) {
     res.status(400)
     throw new Error("House not found")
   }
-
   //delete prev file images from S3
-  house.houseImage.forEach((fileKey) => deleteFile(fileKey))
-
-  //upload new file images to S3
+  house.houseImage.forEach(
+    async (fileKey) => await deleteFile(fileKey)
+  )
+  //upload resized images to S3
   const houseImageFiles = await Promise.all(
-    files.map(async (file) => {
+    resizedFiles.map(async (file) => {
       const result = await uploadFile(file)
       fs.unlinkSync(`${file.path}`)
       return result.Key

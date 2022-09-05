@@ -36,6 +36,7 @@ router.put(
   util.isLoggedin,
   util.checkPermission,
   upload.array("image"),
+  resizeImages,
   updateHouse
 )
 
