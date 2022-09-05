@@ -1,13 +1,83 @@
+import { useEffect, useState } from "react"
+import houseDataService from "../services/house"
+import { useNavigate } from "react-router-dom"
+
 function HouseForm({
+  setLoading,
+  setFormData,
   formData,
-  handleFormSubmittion,
-  onChange,
-  onImageChange,
-  imageURLs,
-  images,
   setImages,
-  cancelUpload
+  images
 }) {
+  const [imageURLs, setImageURLs] = useState([])
+  const navigate = useNavigate()
+  const onChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+  }
+  const cancelUpload = (e, imgSrc) => {
+    e.preventDefault()
+    const index = imageURLs.indexOf(imgSrc)
+    const arrayImages = [...images]
+    arrayImages.splice(index, 1)
+    setImages(() => [...arrayImages])
+  }
+  const onImageChange = (e) => {
+    const maxAllowedSize = 2 * 1024 * 1024
+    if (e.target.files[0]?.size > maxAllowedSize)
+      return alert("Max file size: 2MB!")
+    e.target.files[0] &&
+      setImages((prev) => [...prev, e.target.files[0]])
+  }
+  const appendToFormData = (images, formData) => {
+    const updatedFormData = new FormData()
+    images.forEach((image) =>
+      updatedFormData.append("image", image)
+    )
+    updatedFormData.append(
+      "streetAddress",
+      formData.streetAddress
+    )
+    updatedFormData.append("city", formData.city)
+    updatedFormData.append("state", formData.state)
+    updatedFormData.append("zip", formData.zip)
+    updatedFormData.append(
+      "totalBedrooms",
+      formData.totalBedrooms
+    )
+    updatedFormData.append(
+      "totalBathrooms",
+      formData.totalBathrooms
+    )
+    updatedFormData.append("bedType", formData.bedType)
+    updatedFormData.append("contents", formData.contents)
+    updatedFormData.append("gender", formData.gender)
+    updatedFormData.append("price", formData.price)
+    return updatedFormData
+  }
+  const handleFormSubmittion = (e) => {
+    setLoading(true)
+    e.preventDefault()
+    const updatedFormData = appendToFormData(
+      images,
+      formData
+    )
+    houseDataService
+      .createHouse(updatedFormData)
+      .then((res) => {
+        setLoading(false)
+        if (res.status === 200) navigate("/house")
+      })
+  }
+  useEffect(() => {
+    const newImageUrls = []
+    images.forEach((image) =>
+      newImageUrls.push(URL.createObjectURL(image))
+    )
+    setImageURLs(newImageUrls)
+  }, [images])
   return (
     <div>
       <div className="max-w-7xl mx-auto mb-10">
