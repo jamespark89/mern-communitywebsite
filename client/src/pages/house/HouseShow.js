@@ -4,16 +4,16 @@ import {
   useNavigate,
   useParams
 } from "react-router-dom"
-import houseDataService from "../../services/house"
-import Modal from "../../components/Modal"
+import houseDataService from "services/house"
+import Modal from "components/Modal"
 import { useSelector } from "react-redux"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faBed,
   faBathtub
 } from "@fortawesome/free-solid-svg-icons"
-import Carousel from "../../components/Carousel"
-import LoadingSpinner from "../../components/LoadingSpinner"
+import Carousel from "components/Carousel"
+import LoadingSpinner from "components/LoadingSpinner"
 
 function HouseShow() {
   const { id } = useParams()

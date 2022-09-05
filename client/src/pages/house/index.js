@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import houseDataService from "../../services/house"
+import houseDataService from "services/house"
 import { Link, useNavigate } from "react-router-dom"
-import LoadingSpinner from "../../components/LoadingSpinner"
+import LoadingSpinner from "components/LoadingSpinner"
 export default function House() {
   const navigate = useNavigate()
   const [data, setData] = useState([])

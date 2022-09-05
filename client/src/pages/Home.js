@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import Ads from "../components/Ads"
-import LoadingSpinner from "../components/LoadingSpinner"
+import Ads from "components/Ads"
+import LoadingSpinner from "components/LoadingSpinner"
 
 export default function Home() {
   const { isLoading } = useSelector((state) => state.auth)

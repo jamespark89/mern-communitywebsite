@@ -2,7 +2,7 @@ import { Disclosure } from "@headlessui/react"
 import { MenuIcon, XIcon } from "@heroicons/react/outline"
 import { useDispatch, useSelector } from "react-redux"
 import { NavLink } from "react-router-dom"
-import { logout } from "../redux/authSlice"
+import { logout } from "redux/authSlice"
 
 export default function Navbar() {
   const { user } = useSelector((state) => state.auth)
