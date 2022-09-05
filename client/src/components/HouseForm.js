@@ -1,16 +1,13 @@
 import { useEffect, useState } from "react"
-import houseDataService from "../services/house"
-import { useNavigate } from "react-router-dom"
 
 function HouseForm({
-  setLoading,
+  handleFormSubmission,
   setFormData,
   formData,
   setImages,
   images
 }) {
   const [imageURLs, setImageURLs] = useState([])
-  const navigate = useNavigate()
   const onChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -31,46 +28,7 @@ function HouseForm({
     e.target.files[0] &&
       setImages((prev) => [...prev, e.target.files[0]])
   }
-  const appendToFormData = (images, formData) => {
-    const updatedFormData = new FormData()
-    images.forEach((image) =>
-      updatedFormData.append("image", image)
-    )
-    updatedFormData.append(
-      "streetAddress",
-      formData.streetAddress
-    )
-    updatedFormData.append("city", formData.city)
-    updatedFormData.append("state", formData.state)
-    updatedFormData.append("zip", formData.zip)
-    updatedFormData.append(
-      "totalBedrooms",
-      formData.totalBedrooms
-    )
-    updatedFormData.append(
-      "totalBathrooms",
-      formData.totalBathrooms
-    )
-    updatedFormData.append("bedType", formData.bedType)
-    updatedFormData.append("contents", formData.contents)
-    updatedFormData.append("gender", formData.gender)
-    updatedFormData.append("price", formData.price)
-    return updatedFormData
-  }
-  const handleFormSubmittion = (e) => {
-    setLoading(true)
-    e.preventDefault()
-    const updatedFormData = appendToFormData(
-      images,
-      formData
-    )
-    houseDataService
-      .createHouse(updatedFormData)
-      .then((res) => {
-        setLoading(false)
-        if (res.status === 200) navigate("/house")
-      })
-  }
+
   useEffect(() => {
     const newImageUrls = []
     images.forEach((image) =>
@@ -102,7 +60,7 @@ function HouseForm({
             <div className="mt-5 md:mt-0 md:col-span-2">
               <form
                 encType="multipart/form-data"
-                onSubmit={handleFormSubmittion}
+                onSubmit={handleFormSubmission}
                 id="form"
               >
                 <div className="shadow overflow-hidden sm:rounded-md">
@@ -117,6 +75,7 @@ function HouseForm({
                         </label>
                         <input
                           type="text"
+                          required
                           name="streetAddress"
                           id="streetAddress"
                           value={formData.streetAddress}
@@ -137,6 +96,7 @@ function HouseForm({
                           type="text"
                           name="city"
                           id="city"
+                          required
                           value={formData.city}
                           onChange={onChange}
                           autoComplete="address-level2"
@@ -155,6 +115,7 @@ function HouseForm({
                           type="text"
                           name="state"
                           id="state"
+                          required
                           value={formData.state}
                           autoComplete="address-level1"
                           onChange={onChange}
@@ -173,6 +134,7 @@ function HouseForm({
                           type="text"
                           name="zip"
                           id="zip"
+                          required
                           value={formData.zip}
                           autoComplete="postal-code"
                           onChange={onChange}
@@ -292,6 +254,7 @@ function HouseForm({
                           type="number"
                           name="price"
                           id="price"
+                          required
                           value={formData.price}
                           onChange={onChange}
                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -309,6 +272,7 @@ function HouseForm({
                           id="contents"
                           rows="20"
                           name="contents"
+                          required
                           value={formData.contents}
                           onChange={onChange}
                           className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
@@ -326,7 +290,9 @@ function HouseForm({
                           name="image"
                           multiple
                           required={
-                            imageURLs === [] ? true : false
+                            imageURLs.length === 0
+                              ? true
+                              : false
                           }
                           accept=".png, .jpg, .jpeg"
                           onChange={onImageChange}

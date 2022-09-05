@@ -1,14 +1,17 @@
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import houseDataService from "../../services/house"
+import houseDataService from "services/house"
 import { useSelector } from "react-redux"
-import HouseForm from "../../components/HouseForm"
-import LoadingSpinner from "../../components/LoadingSpinner"
-import { urlToObject } from "../../utils/formatData"
+import HouseForm from "components/HouseForm"
+import LoadingSpinner from "components/LoadingSpinner"
+import { urlToObject } from "utils/formatData"
+import { useNavigate } from "react-router-dom"
+import { appendToFormData } from "utils/formatData"
 
 function HouseEdit() {
   const { id } = useParams()
   const { user } = useSelector((state) => state.auth)
+  const navigate = useNavigate()
   const [images, setImages] = useState([])
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
@@ -25,10 +28,10 @@ function HouseEdit() {
     contents: "",
     houseImage: []
   })
+
   const fetchData = async () => {
     setLoading(true)
     await houseDataService.getById(id).then((res) => {
-      console.log(res.data)
       setFormData({
         username: res.data.username,
         streetAddress: res.data.streetAddress,
@@ -53,6 +56,21 @@ function HouseEdit() {
     setLoading(false)
   }
 
+  const handleFormSubmission = (e) => {
+    setLoading(true)
+    e.preventDefault()
+    const updatedFormData = appendToFormData(
+      images,
+      formData
+    )
+    houseDataService
+      .updateHouse(updatedFormData, id)
+      .then((res) => {
+        setLoading(false)
+        if (res.status === 200) navigate("/house")
+      })
+  }
+
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -65,6 +83,7 @@ function HouseEdit() {
       images={images}
       setFormData={setFormData}
       setImages={setImages}
+      handleFormSubmittion={handleFormSubmission}
     />
   )
 }
