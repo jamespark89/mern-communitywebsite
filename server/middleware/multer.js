@@ -14,14 +14,7 @@ const storage = multer.diskStorage({
 })
 
 const upload = multer({ storage: storage })
-// const urlToObject = async (imagePath) => {
-//   const response = await fetch("uploads/" + imagePath)
-//   const blob = await response.blob()
-//   const file = new File([blob], imagePath, {
-//     type: blob.type
-//   })
-//   return file
-// }
+
 const resizeImages = async (req, res, next) => {
   if (!req.files) return next()
   req.body.images = []
