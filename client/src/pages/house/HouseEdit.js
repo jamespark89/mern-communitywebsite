@@ -83,7 +83,7 @@ function HouseEdit() {
       images={images}
       setFormData={setFormData}
       setImages={setImages}
-      handleFormSubmittion={handleFormSubmission}
+      handleFormSubmission={handleFormSubmission}
     />
   )
 }

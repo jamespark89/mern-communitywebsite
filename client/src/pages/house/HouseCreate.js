@@ -27,8 +27,8 @@ function HouseCreate() {
   })
 
   const handleFormSubmission = (e) => {
-    setLoading(true)
     e.preventDefault()
+    setLoading(true)
     const updatedFormData = appendToFormData(
       images,
       formData
@@ -49,7 +49,7 @@ function HouseCreate() {
       images={images}
       setFormData={setFormData}
       setImages={setImages}
-      handleFormSubmittion={handleFormSubmission}
+      handleFormSubmission={handleFormSubmission}
     />
   )
 }
