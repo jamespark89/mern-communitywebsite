@@ -1,9 +1,9 @@
 import React from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { useState, useEffect } from "react"
-import jobDataService from "../../services/job"
-import JobForm from "../../components/JobForm"
-import LoadingSpinner from "../../components/LoadingSpinner"
+import jobDataService from "services/job"
+import JobForm from "components/JobForm"
+import LoadingSpinner from "components/LoadingSpinner"
 
 function JobEdit() {
   const { id } = useParams()

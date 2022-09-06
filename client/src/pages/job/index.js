@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import jobDataService from "../../services/job"
+import jobDataService from "services/job"
 import { Link, useNavigate } from "react-router-dom"
-import LoadingSpinner from "../../components/LoadingSpinner"
+import LoadingSpinner from "components/LoadingSpinner"
 export default function Job() {
   const navigate = useNavigate()
   const [data, setData] = useState([])

@@ -1,10 +1,10 @@
 import React, { useState } from "react"
 import { useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
-import JobForm from "../../components/JobForm"
-import LoadingSpinner from "../../components/LoadingSpinner"
+import JobForm from "components/JobForm"
+import LoadingSpinner from "components/LoadingSpinner"
 
-import jobDataService from "../../services/job"
+import jobDataService from "services/job"
 
 export default function JobNew() {
   const { user } = useSelector((state) => state.auth)
