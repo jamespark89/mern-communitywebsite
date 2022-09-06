@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
-import jobDataService from "../../services/job"
-import Modal from "../../components/Modal"
+import jobDataService from "services/job"
+import Modal from "components/Modal"
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import LoadingSpinner from "../../components/LoadingSpinner"
+import LoadingSpinner from "components/LoadingSpinner"
 
 export default function _id() {
   const { id } = useParams()
@@ -48,16 +48,20 @@ export default function _id() {
         open={open}
         deleteJob={deleteJob}
       />
-      <div className="container mx-auto md:w-3/5">
-        <div className="container mx-auto mt-10 w-full border-t-4 border-b-4">
+      <div className="container mx-auto min-h-[50%] md:w-3/5">
+        <div className=" mx-auto mt-10 w-full border-t-4 border-b-4">
           <li className="w-full flex p-2 text-xl items-center">
             {data.title}
           </li>
           <li className="w-full h-8 flex justify-between items-center bg-gray-200">
-            <span>😃{data.username}</span>
-            <span>🕰{data.createdAt?.slice(5, 10)}</span>
+            <span className="mx-2">😃{data.username}</span>
+            <span className="mx-2">
+              🕰{data.createdAt?.slice(5, 10)}
+            </span>
           </li>
-          <li className="w-full h-96 ">{data.contents}</li>
+          <li className="w-full my-2 h-full whitespace-pre-line">
+            {data.contents}
+          </li>
         </div>
         {!user || user?._id !== data?.author?._id ? null : (
           <>
