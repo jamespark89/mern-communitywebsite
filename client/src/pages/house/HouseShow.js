@@ -97,7 +97,7 @@ function HouseShow() {
             </div>
           </div>
 
-          <div className="border-b-2 my-5 pb-5">
+          <div className="border-b-2 my-5 pb-5 whitespace-pre-line">
             <div className="font-bold text-lg">
               Description
             </div>
