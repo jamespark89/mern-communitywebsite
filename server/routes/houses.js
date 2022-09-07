@@ -17,6 +17,7 @@ router.get("/", getHouses)
 
 router.post(
   "/",
+  util.isLoggedin,
   upload.array("image"),
   resizeImages,
   setHouse
@@ -39,5 +40,4 @@ router.put(
   resizeImages,
   updateHouse
 )
-
 module.exports = router
