@@ -2,15 +2,26 @@ import { useEffect, useState } from "react"
 import houseDataService from "services/house"
 import { Link, useNavigate } from "react-router-dom"
 import LoadingSpinner from "components/LoadingSpinner"
+import Pagination from "components/Pagination"
+import { useSearchParams } from "react-router-dom"
+
 export default function House() {
   const navigate = useNavigate()
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const pageParams = Number(searchParams.get("page")) || 1
+  const [totalHouseNumber, setTotalHouseNumber] =
+    useState(0)
+  const limit = 8 // House limit number for showing one page
   const fetchData = async () => {
+    setLoading(true)
     await houseDataService
-      .getAll()
+      .getAllByPage(currentPage, limit)
       .then((res) => {
-        setData(res.data)
+        setData(res.data.houses)
+        setTotalHouseNumber(res.data.totalCount)
       })
       .then(() => setLoading(false))
       .catch((err) => {
@@ -18,8 +29,12 @@ export default function House() {
       })
   }
   useEffect(() => {
+    setCurrentPage(pageParams)
+  }, [pageParams])
+  useEffect(() => {
     fetchData()
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage])
   return (
     <>
       <div className="bg-white min-h-screen">
@@ -39,7 +54,7 @@ export default function House() {
             <LoadingSpinner />
           ) : (
             <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-              {data.map((house) => (
+              {data?.map((house) => (
                 <div
                   key={house._id}
                   className="group relative"
@@ -96,6 +111,12 @@ export default function House() {
               ))}
             </div>
           )}
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            totalHouseNumber={totalHouseNumber}
+            limit={limit}
+          />
         </div>
       </div>
     </>

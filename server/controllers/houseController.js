@@ -11,12 +11,15 @@ const {
 // @route  GET /api/houses
 // @access Private
 const getHouses = asyncHandler(async (req, res) => {
+  const page = req.query.page
+  const limit = req.query.limit
   const houses = await House.find()
     .populate("author")
-    .limit(20)
+    .limit(limit)
+    .skip((page - 1) * limit)
     .sort("-createdAt")
-
-  res.status(200).json(houses)
+  const totalCount = await House.collection.countDocuments()
+  res.status(200).json({ houses, totalCount })
 })
 
 // @desc   Set house

@@ -19,6 +19,7 @@ import HouseShow from "pages/house/HouseShow"
 import HouseCreate from "pages/house/HouseCreate"
 import HouseEdit from "pages/house/HouseEdit"
 import Footer from "components/Footer"
+import Profile from "pages/Profile"
 
 function App() {
   const dispatch = useDispatch()
@@ -57,6 +58,11 @@ function App() {
           />
         </Route>
 
+        <Route
+          path="/house?page=:page"
+          exact
+          element={<House />}
+        />
         <Route path="/house" exact element={<House />} />
         <Route
           path="/house/:id"
@@ -74,6 +80,11 @@ function App() {
           path="/house/edit/:id"
           exact
           element={<HouseEdit />}
+        />
+        <Route
+          path="/profile/:id"
+          exact
+          element={<Profile />}
         />
       </Routes>
       <Footer />
