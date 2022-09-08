@@ -8,13 +8,14 @@ import { useSearchParams } from "react-router-dom"
 export default function Job() {
   const navigate = useNavigate()
   const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
   const [searchParams, setSearchParams] = useSearchParams()
   const pageParams = Number(searchParams.get("page")) || 1
   const [totalJobNumber, setTotalJobNumber] = useState(0)
   const limit = 10 // House limit number for showing one page
   const fetchData = async () => {
+    setLoading(true)
     await jobDataService
       .getAllByPage(currentPage, limit)
       .then((res) => {
