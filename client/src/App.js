@@ -39,6 +39,11 @@ function App() {
           Error loging in. Please try again later!
         </Route>
 
+        <Route
+          path="/Job?page=:page"
+          exact
+          element={<Job />}
+        />
         <Route path="/job" exact element={<Job />} />
         <Route
           path="/job/:id"

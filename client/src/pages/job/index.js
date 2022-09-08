@@ -2,25 +2,37 @@ import { useEffect, useState } from "react"
 import jobDataService from "services/job"
 import { Link, useNavigate } from "react-router-dom"
 import LoadingSpinner from "components/LoadingSpinner"
+import Pagination from "components/Pagination"
+import { useSearchParams } from "react-router-dom"
+
 export default function Job() {
   const navigate = useNavigate()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const pageParams = Number(searchParams.get("page")) || 1
+  const [totalJobNumber, setTotalJobNumber] = useState(0)
+  const limit = 10 // House limit number for showing one page
   const fetchData = async () => {
     await jobDataService
-      .getAll()
+      .getAllByPage(currentPage, limit)
       .then((res) => {
-        setData(res.data)
+        setData(res.data.jobs)
+        setTotalJobNumber(res.data.totalCount)
       })
       .then(() => setLoading(false))
       .catch((err) => {
         console.log(err)
       })
   }
-
+  useEffect(() => {
+    setCurrentPage(pageParams)
+  }, [pageParams])
   useEffect(() => {
     fetchData()
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage])
 
   return (
     <div className="min-h-screen md:max-w-fit xs:w-11/12 mx-auto my-10">
@@ -70,6 +82,11 @@ export default function Job() {
             </div>
           ))
         )}
+        <Pagination
+          currentPage={currentPage}
+          totalDataNumber={totalJobNumber}
+          limit={limit}
+        />
       </div>
     </div>
   )

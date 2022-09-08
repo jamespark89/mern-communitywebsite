@@ -114,7 +114,7 @@ export default function House() {
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            totalHouseNumber={totalHouseNumber}
+            totalDataNumber={totalHouseNumber}
             limit={limit}
           />
         </div>

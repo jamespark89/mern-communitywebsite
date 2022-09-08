@@ -5,12 +5,15 @@ const User = require("../models/user.model")
 // @route  GET /api/jobs
 // @access Private
 const getJobs = asyncHandler(async (req, res) => {
+  const page = req.query.page
+  const limit = req.query.limit
   const jobs = await Job.find()
     .populate("author")
-    .limit(20)
+    .limit(limit)
+    .skip((page - 1) * limit)
     .sort("-createdAt")
-
-  res.status(200).json(jobs)
+  const totalCount = await Job.collection.countDocuments()
+  res.status(200).json({ jobs, totalCount })
 })
 
 // @desc   Set jobs

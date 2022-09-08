@@ -1,6 +1,11 @@
 const axios = require("axios")
 axios.defaults.withCredentials = true
 class jobDataService {
+  async getAllByPage(page, limit) {
+    return await axios.get(
+      `/api/jobs?page=${page}&limit=${limit}`
+    )
+  }
   async getAll() {
     return await axios.get(`/api/jobs`)
   }

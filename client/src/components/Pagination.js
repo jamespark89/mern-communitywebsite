@@ -2,16 +2,15 @@ import { Link, NavLink } from "react-router-dom"
 
 function Pagination({
   currentPage,
-  setCurrentPage,
   limit,
-  totalHouseNumber
+  totalDataNumber
 }) {
-  const totalPage = Math.ceil(totalHouseNumber / limit)
+  const totalPage = Math.ceil(totalDataNumber / limit)
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ")
   }
   return (
-    <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-5">
+    <div className="flex items-center justify-between  bg-white px-4 py-3 sm:px-6 mt-5">
       <div className="flex flex-1 justify-between sm:hidden">
         <Link
           to={
@@ -19,7 +18,7 @@ function Pagination({
               ? `?page=${currentPage - 1}`
               : `?page=1`
           }
-          class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
         </Link>
@@ -29,7 +28,7 @@ function Pagination({
               ? `?page=${currentPage + 1}`
               : `?page=${totalPage}`
           }
-          class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
         </Link>
@@ -41,7 +40,7 @@ function Pagination({
             to <span className="font-medium">{limit}</span>{" "}
             of{" "}
             <span className="font-medium">
-              {totalHouseNumber}
+              {totalDataNumber}
             </span>{" "}
             results
           </p>
@@ -98,7 +97,7 @@ function Pagination({
                     >
                       {1}
                     </NavLink>
-                    <span class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700">
+                    <span className="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700">
                       ...
                     </span>
                   </>
@@ -139,7 +138,7 @@ function Pagination({
                   ))}
                 {currentPage < totalPage - 1 ? (
                   <>
-                    <span class="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700">
+                    <span className="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700">
                       ...
                     </span>
                     <NavLink
