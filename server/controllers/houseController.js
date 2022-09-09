@@ -13,11 +13,20 @@ const {
 const getHouses = asyncHandler(async (req, res) => {
   const page = req.query.page
   const limit = req.query.limit
+  const userId = req.query.userId
   const houses = await House.find()
-    .populate("author")
+    .populate({
+      path: "author",
+      match: { _id: { $eq: userId } }
+    })
     .limit(limit)
     .skip((page - 1) * limit)
     .sort("-createdAt")
+    .then((house) => {
+      if (userId)
+        return house.filter((house) => house.author != null)
+      return house
+    })
   const totalCount = await House.collection.countDocuments()
   res.status(200).json({ houses, totalCount })
 })

@@ -1,17 +1,26 @@
 const Job = require("../models/job.model")
 const asyncHandler = require("express-async-handler")
-const User = require("../models/user.model")
+
 // @desc   Get jobs
 // @route  GET /api/jobs
 // @access Private
 const getJobs = asyncHandler(async (req, res) => {
   const page = req.query.page
   const limit = req.query.limit
+  const userId = req.query.userId
   const jobs = await Job.find()
-    .populate("author")
+    .populate({
+      path: "author",
+      match: { _id: { $eq: userId } }
+    })
     .limit(limit)
     .skip((page - 1) * limit)
     .sort("-createdAt")
+    .then((job) => {
+      if (userId)
+        return job.filter((job) => job.author != null)
+      return job
+    })
   const totalCount = await Job.collection.countDocuments()
   res.status(200).json({ jobs, totalCount })
 })
