@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom"
+import { NavLink, useSearchParams } from "react-router-dom"
 
 function Pagination({
   currentPage,
@@ -6,32 +6,44 @@ function Pagination({
   totalDataNumber
 }) {
   const totalPage = Math.ceil(totalDataNumber / limit)
+  let [searchParams] = useSearchParams()
+  let updatedSearchParams = new URLSearchParams(
+    searchParams.toString()
+  )
   function classNames(...classes) {
     return classes.filter(Boolean).join(" ")
   }
+  //Custom Link for pagination
+  //Update only page params
+  function PageLink({ pageNumber, ...props }) {
+    updatedSearchParams.set("page", pageNumber)
+    return (
+      <NavLink
+        to={`?${updatedSearchParams.toString()}`}
+        {...props}
+      />
+    )
+  }
+
   return (
     <div className="flex items-center justify-between  bg-white px-4 py-3 sm:px-6 mt-5">
       <div className="flex flex-1 justify-between sm:hidden">
-        <Link
-          to={
-            currentPage > 1
-              ? `?page=${currentPage - 1}`
-              : `?page=1`
-          }
-          className="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+        <PageLink
+          pageNumber={currentPage > 1 ? currentPage - 1 : 1}
+          className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Previous
-        </Link>
-        <Link
-          to={
+        </PageLink>
+        <PageLink
+          pageNumber={
             currentPage < totalPage
-              ? `?page=${currentPage + 1}`
-              : `?page=${totalPage}`
+              ? currentPage + 1
+              : totalPage
           }
           className="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
         >
           Next
-        </Link>
+        </PageLink>
       </div>
       <div className="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
         <div>
@@ -42,10 +54,10 @@ function Pagination({
             </span>{" "}
             to{" "}
             <span className="font-medium">
-              {(currentPage - 1) * limit + 8 >
+              {(currentPage - 1) * limit + limit >
               totalDataNumber
                 ? totalDataNumber
-                : (currentPage - 1) * limit + 8}
+                : (currentPage - 1) * limit + limit}
             </span>{" "}
             of{" "}
             <span className="font-medium">
@@ -59,24 +71,22 @@ function Pagination({
             className="isolate inline-flex -space-x-px rounded-md shadow-sm"
             aria-label="Pagination"
           >
-            <Link
-              to={
-                currentPage > 1
-                  ? `?page=${currentPage - 1}`
-                  : `?page=1`
+            <PageLink
+              pageNumber={
+                currentPage > 1 ? currentPage - 1 : 1
               }
               className="relative inline-flex items-center rounded-l-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"
             >
               <span className="sr-only">Previous</span>
               {"<"}
-            </Link>
+            </PageLink>
             {totalPage < 8 ? (
               Array(totalPage)
                 .fill(null)
                 .map((value, index) => (
-                  <NavLink
+                  <PageLink
                     key={index}
-                    to={`?page=${index + 1}`}
+                    pageNumber={index + 1}
                     className={() =>
                       classNames(
                         currentPage === index + 1
@@ -87,14 +97,14 @@ function Pagination({
                     }
                   >
                     {index + 1}
-                  </NavLink>
+                  </PageLink>
                 ))
             ) : (
               <>
                 {currentPage < 3 ? null : (
                   <>
-                    <NavLink
-                      to={`?page=1`}
+                    <PageLink
+                      pageNumber={1}
                       className={() =>
                         classNames(
                           currentPage === 1
@@ -105,7 +115,7 @@ function Pagination({
                       }
                     >
                       {1}
-                    </NavLink>
+                    </PageLink>
                     <span className="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700">
                       ...
                     </span>
@@ -115,15 +125,15 @@ function Pagination({
                 {Array(3)
                   .fill(null)
                   .map((value, index) => (
-                    <NavLink
+                    <PageLink
                       key={index}
-                      to={`?page=${
+                      pageNumber={
                         currentPage >= totalPage
                           ? totalPage - 2 + index
                           : currentPage < 3
                           ? index + 1
                           : currentPage - 1 + index
-                      }`}
+                      }
                       className={() =>
                         classNames(
                           currentPage ===
@@ -143,15 +153,15 @@ function Pagination({
                         : currentPage < 3
                         ? index + 1
                         : currentPage - 1 + index}
-                    </NavLink>
+                    </PageLink>
                   ))}
                 {currentPage < totalPage - 1 ? (
                   <>
                     <span className="relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700">
                       ...
                     </span>
-                    <NavLink
-                      to={`?page=${totalPage}`}
+                    <PageLink
+                      pageNumber={totalPage}
                       className={() =>
                         classNames(
                           currentPage === totalPage
@@ -162,23 +172,23 @@ function Pagination({
                       }
                     >
                       {totalPage}
-                    </NavLink>
+                    </PageLink>
                   </>
                 ) : null}
               </>
             )}
 
-            <Link
-              to={
+            <PageLink
+              pageNumber={
                 currentPage < totalPage
-                  ? `?page=${currentPage + 1}`
-                  : `?page=${totalPage}`
+                  ? currentPage + 1
+                  : totalPage
               }
               className="relative inline-flex items-center rounded-r-md border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 hover:bg-gray-50 focus:z-20"
             >
               <span className="sr-only">Next</span>
               {">"}
-            </Link>
+            </PageLink>
           </nav>
         </div>
       </div>
