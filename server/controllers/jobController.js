@@ -6,22 +6,33 @@ const asyncHandler = require("express-async-handler")
 // @access Private
 const getJobs = asyncHandler(async (req, res) => {
   const page = req.query.page
-  const limit = req.query.limit
-  const userId = req.query.userId
-  const jobs = await Job.find()
-    .populate({
-      path: "author",
-      match: { _id: { $eq: userId } }
+  let totalCount = 0
+  const limit =
+    req.query.limit == "undefined" ? 0 : req.query.limit
+  const userId =
+    req.query.userId == "undefined" ||
+    req.query.userId == "null"
+      ? undefined
+      : req.query.userId
+  let jobs = []
+
+  if (!userId) {
+    jobs = await Job.find()
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .sort("-createdAt")
+    totalCount = await Job.collection.countDocuments()
+  } else {
+    jobs = await Job.find({ author: userId })
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .sort("-createdAt")
+
+    const filteredJob = await Job.find({
+      author: userId
     })
-    .limit(limit)
-    .skip((page - 1) * limit)
-    .sort("-createdAt")
-    .then((job) => {
-      if (userId)
-        return job.filter((job) => job.author != null)
-      return job
-    })
-  const totalCount = await Job.collection.countDocuments()
+    totalCount = filteredJob.length
+  }
   res.status(200).json({ jobs, totalCount })
 })
 

@@ -12,22 +12,33 @@ const {
 // @access Private
 const getHouses = asyncHandler(async (req, res) => {
   const page = req.query.page
-  const limit = req.query.limit
-  const userId = req.query.userId
-  const houses = await House.find()
-    .populate({
-      path: "author",
-      match: { _id: { $eq: userId } }
+  let totalCount = 0
+  const limit =
+    req.query.limit == "undefined" ? 0 : req.query.limit
+  const userId =
+    req.query.userId == "undefined" ||
+    req.query.userId == "null"
+      ? undefined
+      : req.query.userId
+  let houses = []
+
+  if (!userId) {
+    houses = await House.find()
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .sort("-createdAt")
+    totalCount = await House.collection.countDocuments()
+  } else {
+    houses = await House.find({ author: userId })
+      .limit(limit)
+      .skip((page - 1) * limit)
+      .sort("-createdAt")
+
+    const filteredHouse = await House.find({
+      author: userId
     })
-    .limit(limit)
-    .skip((page - 1) * limit)
-    .sort("-createdAt")
-    .then((house) => {
-      if (userId)
-        return house.filter((house) => house.author != null)
-      return house
-    })
-  const totalCount = await House.collection.countDocuments()
+    totalCount = filteredHouse.length
+  }
   res.status(200).json({ houses, totalCount })
 })
 
