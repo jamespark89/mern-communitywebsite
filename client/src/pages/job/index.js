@@ -9,15 +9,16 @@ export default function Job() {
   const navigate = useNavigate()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
+  // eslint-disable-next-line no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams()
-  const pageParams = Number(searchParams.get("page")) || 1
+  const currentPage = Number(searchParams.get("page")) || 1
+  const userId = searchParams.get("userId")
   const [totalJobNumber, setTotalJobNumber] = useState(0)
   const limit = 10 // House limit number for showing one page
   const fetchData = async () => {
     setLoading(true)
     await jobDataService
-      .getAllByPage(currentPage, limit)
+      .getAllByPage(currentPage, limit, userId)
       .then((res) => {
         setData(res.data.jobs)
         setTotalJobNumber(res.data.totalCount)
@@ -27,13 +28,11 @@ export default function Job() {
         console.log(err)
       })
   }
-  useEffect(() => {
-    setCurrentPage(pageParams)
-  }, [pageParams])
+
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage])
+  }, [currentPage, userId])
 
   return (
     <div className="min-h-screen md:max-w-fit xs:w-11/12 mx-auto my-10">
@@ -45,7 +44,10 @@ export default function Job() {
           New
         </button>
       </div>
-      <div className="md:max-w-fit  mx-auto mt-10 border-t-4">
+      <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+        Job List
+      </h1>
+      <div className="md:max-w-fit  mx-auto mt-6 border-t-4">
         <div className="md:flex xs:hidden justify-center h-10 items-center border-b-2 bg-gray-100">
           <li className="w-20 text-center md:inline xs:hidden">
             No
@@ -87,6 +89,8 @@ export default function Job() {
           currentPage={currentPage}
           totalDataNumber={totalJobNumber}
           limit={limit}
+          setSearchParams={setSearchParams}
+          searchParams={searchParams}
         />
       </div>
     </div>

@@ -9,16 +9,18 @@ export default function House() {
   const navigate = useNavigate()
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
-  const [currentPage, setCurrentPage] = useState(1)
+  // eslint-disable-next-line no-unused-vars
   const [searchParams, setSearchParams] = useSearchParams()
-  const pageParams = Number(searchParams.get("page")) || 1
+  const currentPage = Number(searchParams.get("page")) || 1
+  const userId = searchParams.get("userId")
   const [totalHouseNumber, setTotalHouseNumber] =
     useState(0)
-  const limit = 8 // House limit number for showing one page
+  // House limit number for showing one page
+  const limit = 8
   const fetchData = async () => {
     setLoading(true)
     await houseDataService
-      .getAllByPage(currentPage, limit)
+      .getAllByPage(currentPage, limit, userId)
       .then((res) => {
         setData(res.data.houses)
         setTotalHouseNumber(res.data.totalCount)
@@ -28,13 +30,13 @@ export default function House() {
         console.log(err)
       })
   }
-  useEffect(() => {
-    setCurrentPage(pageParams)
-  }, [pageParams])
+  // useEffect(() => {
+  //   setCurrentPage(pageParams)
+  // }, [pageParams])
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage])
+  }, [currentPage, userId])
   return (
     <>
       <div className="bg-white min-h-screen">
@@ -47,9 +49,9 @@ export default function House() {
               New
             </button>
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
             House List
-          </h2>
+          </h1>
           {loading ? (
             <LoadingSpinner />
           ) : (
@@ -113,9 +115,10 @@ export default function House() {
           )}
           <Pagination
             currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
             totalDataNumber={totalHouseNumber}
             limit={limit}
+            setSearchParams={setSearchParams}
+            searchParams={searchParams}
           />
         </div>
       </div>

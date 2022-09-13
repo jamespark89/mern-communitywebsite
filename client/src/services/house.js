@@ -1,10 +1,13 @@
 const axios = require("axios")
 axios.defaults.withCredentials = true
 class houseDataService {
-  async getAllByPage(page, limit) {
+  async getAllByPage(page, limit, userId) {
     return await axios.get(
-      `/api/houses?page=${page}&limit=${limit}`
+      `/api/houses?page=${page}&limit=${limit}&userId=${userId}`
     )
+  }
+  async getAllByUserId(id) {
+    return await axios.get(`/api/houses?userId=${id}`)
   }
   async getById(id) {
     return await axios.get(`/api/houses/${id}`)
