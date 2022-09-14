@@ -39,17 +39,19 @@ function App() {
           Error loging in. Please try again later!
         </Route>
 
-        <Route
-          path="/Job?page=:page"
-          exact
-          element={<Job />}
-        />
         <Route path="/job" exact element={<Job />} />
         <Route
           path="/job/:id"
           exact
           element={<JobShow />}
         />
+        <Route path="/house" exact element={<House />} />
+        <Route
+          path="/house/:id"
+          exact
+          element={<HouseShow />}
+        />
+        {/* Private Rountes */}
         <Route element={<PrivateRoutes />}>
           <Route
             path="/job/new"
@@ -61,36 +63,22 @@ function App() {
             exact
             element={<JobEdit />}
           />
-        </Route>
-
-        <Route
-          path="/house?page=:page"
-          exact
-          element={<House />}
-        />
-        <Route path="/house" exact element={<House />} />
-        <Route
-          path="/house/:id"
-          exact
-          element={<HouseShow />}
-        />
-        <Route element={<PrivateRoutes />}>
           <Route
             path="/house/new"
             exact
             element={<HouseCreate />}
           />
+          <Route
+            path="/house/edit/:id"
+            exact
+            element={<HouseEdit />}
+          />
+          <Route
+            path="/profile/:id"
+            exact
+            element={<Profile />}
+          />
         </Route>
-        <Route
-          path="/house/edit/:id"
-          exact
-          element={<HouseEdit />}
-        />
-        <Route
-          path="/profile/:id"
-          exact
-          element={<Profile />}
-        />
       </Routes>
       <Footer />
     </Router>
