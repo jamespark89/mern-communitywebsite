@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import LoadingSpinner from "components/LoadingSpinner"
 import Pagination from "components/Pagination"
 import { useSearchParams } from "react-router-dom"
+import JobSearchBar from "components/JobSearchBar"
 
 export default function Job() {
   const navigate = useNavigate()
@@ -13,12 +14,13 @@ export default function Job() {
   const [searchParams, setSearchParams] = useSearchParams()
   const currentPage = Number(searchParams.get("page")) || 1
   const userId = searchParams.get("userId")
+  const query = searchParams.get("query")
   const [totalJobNumber, setTotalJobNumber] = useState(0)
   const limit = 10 // House limit number for showing one page
   const fetchData = async () => {
     setLoading(true)
     await jobDataService
-      .getAllByPage(currentPage, limit, userId)
+      .getAllByPage(currentPage, limit, userId, query)
       .then((res) => {
         setData(res.data.jobs)
         setTotalJobNumber(res.data.totalCount)
@@ -32,10 +34,11 @@ export default function Job() {
   useEffect(() => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage, userId])
+  }, [currentPage, userId, query])
 
   return (
     <div className="min-h-screen md:max-w-fit xs:w-11/12 mx-auto my-10">
+      <JobSearchBar />
       <div className="flex justify-end ">
         <button
           onClick={() => navigate("/job/new")}
