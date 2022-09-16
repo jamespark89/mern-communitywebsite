@@ -1,7 +1,6 @@
 const House = require("../models/house.model")
 const asyncHandler = require("express-async-handler")
 const fs = require("fs")
-const path = require("path")
 const {
   uploadFile,
   deleteFile
