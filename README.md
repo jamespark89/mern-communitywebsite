@@ -26,7 +26,8 @@ A simple MERN stack app using google-oauth & AWS s3
   - Sharp library to resize image(640*480, jpeg)
   - Set upload size limit to 2MB
 - [x] ~~Add pagination (Job & House pages)~~(08.09.2022)
-- [ ] Create Profile page
+- [x] ~~Create Profile page~~(14.09.2022)
+  - Add link for user posts / show posts numbers
 - [ ] Add search function for Job page
 - [ ] Update login cookie session
 - [ ] Update UI (favicon, logo, etc.)
