@@ -27,7 +27,11 @@ const getJobs = asyncHandler(async (req, res) => {
       .limit(limit)
       .skip((page - 1) * limit)
       .sort("-createdAt")
-    totalCount = await Job.collection.countDocuments()
+
+    const filteredJob = await Job.find({
+      title: { $regex: `(?i)${query}` }
+    })
+    totalCount = filteredJob.length
   } else {
     jobs = await Job.find({
       author: userId,
@@ -38,7 +42,8 @@ const getJobs = asyncHandler(async (req, res) => {
       .sort("-createdAt")
 
     const filteredJob = await Job.find({
-      author: userId
+      author: userId,
+      title: { $regex: `(?i)${query}` }
     })
     totalCount = filteredJob.length
   }
