@@ -4,6 +4,7 @@ import {
 } from "react-router-dom"
 
 function JobSearchBar() {
+  const searchBtn = document.getElementById("search")
   const navigate = useNavigate()
   let [searchParams] = useSearchParams()
   let updatedSearchParams = new URLSearchParams(
@@ -11,20 +12,21 @@ function JobSearchBar() {
   )
   const handleSearch = () => {
     // e.preventDefault()
-    const search = document.getElementById("search")
-    if (search.value) {
-      updatedSearchParams.set("query", search.value)
-      navigate(`?${updatedSearchParams.toString()}`)
-    }
+    updatedSearchParams.set("query", searchBtn.value)
+    navigate(`?${updatedSearchParams.toString()}`)
   }
-  console.log(updatedSearchParams.toString())
   return (
     <div className="flex justify-center">
       <div className="xl:w-96">
-        <div className="input-group relative flex items-stretch w-full mb-4">
+        <div className="input-group relative flex items-stretch w-full">
           <input
             id="search"
             type="search"
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSearch()
+              }
+            }}
             className="relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded-l transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder="Search"
             aria-label="Search"

@@ -14,16 +14,25 @@ const getJobs = asyncHandler(async (req, res) => {
     req.query.userId == "null"
       ? undefined
       : req.query.userId
+  const query =
+    req.query.query == "null" ||
+    req.query.query == undefined
+      ? ""
+      : req.query.query
   let jobs = []
-
   if (!userId) {
-    jobs = await Job.find()
+    jobs = await Job.find({
+      title: { $regex: `(?i)${query}` }
+    })
       .limit(limit)
       .skip((page - 1) * limit)
       .sort("-createdAt")
     totalCount = await Job.collection.countDocuments()
   } else {
-    jobs = await Job.find({ author: userId })
+    jobs = await Job.find({
+      author: userId,
+      title: { $regex: `(?i)${query}` }
+    })
       .limit(limit)
       .skip((page - 1) * limit)
       .sort("-createdAt")
