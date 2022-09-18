@@ -12,7 +12,7 @@ export default function Home() {
       <div className="h-72">
         <div className="flex h-72 absolute overflow-hidden w-full -z-50">
           <img
-            src="hero.jpg"
+            src="Hero.jpg"
             alt="community"
             className="w-full object-cover"
           />
