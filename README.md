@@ -28,7 +28,8 @@ A simple MERN stack app using google-oauth & AWS s3
 - [x] ~~Add pagination (Job & House pages)~~(08.09.2022)
 - [x] ~~Create Profile page~~(14.09.2022)
   - Add link for user posts / show posts numbers
-- [ ] Add search function for Job page
+- [x] ~~Add search function for Job page~~(17.09.2022)
+  - Add search bar in Job Page
 - [ ] Update login cookie session
 - [ ] Update UI (favicon, logo, etc.)
 <!-- prettier-ignore-end -->
