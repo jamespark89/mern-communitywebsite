@@ -18,7 +18,7 @@ let redisClient = createClient({
   legacyMode: true,
   url:
     process.env.NODE_ENV === "production"
-      ? process.env.REDIS_URL
+      ? process.env.REDIS_TLS_URL
       : "redis://localhost:6379",
   socket: {
     tls:
