@@ -14,7 +14,13 @@ const {
 const { getFileStream } = require("./middleware/s3")
 let RedisStore = require("connect-redis")(session)
 const { createClient } = require("redis")
-let redisClient = createClient({ legacyMode: true })
+let redisClient = createClient({
+  url: process.env.REDIS_URL,
+  socket: {
+    tls: true,
+    rejectUnauthorized: false
+  }
+})
 redisClient.connect().catch(console.error)
 
 connectDB()
