@@ -26,14 +26,14 @@ function HouseCreate() {
     houseImage: []
   })
 
-  const handleFormSubmission = (e) => {
+  const handleFormSubmission = async (e) => {
     e.preventDefault()
     setLoading(true)
     const updatedFormData = appendToFormData(
       images,
       formData
     )
-    houseDataService
+    await houseDataService
       .createHouse(updatedFormData)
       .then((res) => {
         setLoading(false)
