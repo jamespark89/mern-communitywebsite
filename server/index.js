@@ -12,16 +12,29 @@ const {
   errorHandler
 } = require("./middleware/errorMiddleware")
 const { getFileStream } = require("./middleware/s3")
+let RedisStore = require("connect-redis")(session)
+const { createClient } = require("redis")
+let redisClient = createClient({ legacyMode: true })
+redisClient.connect().catch(console.error)
+
 connectDB()
 //Passport
 app.use(
   session({
+    store: new RedisStore({ client: redisClient }),
     secret: process.env.MY_SECRET,
+    name: "id",
     resave: false,
+    rolling: true,
     cookie: {
-      secure: false
+      httpOnly: true,
+      secure:
+        process.env.NODE_ENV === "production"
+          ? true
+          : "auto",
+      maxAge: 60 * 60 * 1000
     },
-    saveUninitialized: true
+    saveUninitialized: false
   })
 )
 app.use(passport.initialize())
