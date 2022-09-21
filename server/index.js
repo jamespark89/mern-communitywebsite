@@ -28,7 +28,9 @@ let redisClient = createClient({
 })
 
 redisClient.connect().catch(console.error)
-
+redisClient.on("error", (err) =>
+  console.error("client err", err)
+)
 connectDB()
 //Passport
 app.use(
