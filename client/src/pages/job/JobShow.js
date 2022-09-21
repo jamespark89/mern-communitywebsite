@@ -21,7 +21,7 @@ export default function _id() {
   })
   const fetchData = async () => {
     setLoading(true)
-    jobDataService
+    await jobDataService
       .getById(id)
       .then((res) => setData(res.data))
     setLoading(false)
