@@ -18,13 +18,13 @@ let redisClient = createClient({
   legacyMode: true,
   url:
     process.env.NODE_ENV === "production"
-      ? process.env.REDIS_TLS_URL
-      : "redis://localhost:6379",
-  socket: {
-    tls:
-      process.env.NODE_ENV === "production" ? true : false,
-    rejectUnauthorized: false
-  }
+      ? process.env.REDIS_URL
+      : "redis://localhost:6379"
+  // socket: {
+  //   tls:
+  //     process.env.NODE_ENV === "production" ? true : false,
+  //   rejectUnauthorized: false
+  // }
 })
 
 redisClient.connect().catch(console.error)
