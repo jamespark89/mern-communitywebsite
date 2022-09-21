@@ -21,7 +21,8 @@ let redisClient = createClient({
       ? process.env.REDIS_TLS_URL
       : "redis://localhost:6379",
   socket: {
-    tls: true,
+    tls:
+      process.env.NODE_ENV === "production" ? true : false,
     rejectUnauthorized: false
   }
 })
@@ -41,8 +42,8 @@ app.use(
       httpOnly: false,
       secure: false,
       maxAge: 60 * 60 * 1000
-    }
-    // saveUninitialized: false
+    },
+    saveUninitialized: false
   })
 )
 app.use(passport.initialize())
