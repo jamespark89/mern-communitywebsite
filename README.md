@@ -30,6 +30,8 @@ A simple MERN stack app using google-oauth & AWS s3
   - Add link for user posts / show posts numbers
 - [x] ~~Add search function for Job page~~(17.09.2022)
   - Add search bar in Job Page
-- [ ] Update login cookie session
+- [x] ~~Update login cookie session~~(21.09.2022)
+  - Add Redis for session management
+  - Set maxAge for session expire & rolling:true for refresh session
 - [ ] Update UI (favicon, logo, etc.)
 <!-- prettier-ignore-end -->
