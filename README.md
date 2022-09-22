@@ -4,7 +4,7 @@
 
 A simple MERN stack app using google-oauth & AWS s3
 
-![Communitywebsite MERN stack using AWS s3](client/public/communitywebsite.png)
+![Communitywebsite MERN stack using AWS s3](client/public/mern-community.gif)
 
 ⌛️ 01.08.2022 ~ ing
 
@@ -23,7 +23,7 @@ A simple MERN stack app using google-oauth & AWS s3
 📋 TODO:
 
 - [x] ~~Add resize image function before upload~~(03.09.2022)
-  - Sharp library to resize image(640*480, jpeg)
+  - Sharp library to resize image(640\*480, jpeg)
   - Set upload size limit to 2MB
 - [x] ~~Add pagination (Job & House pages)~~(08.09.2022)
 - [x] ~~Create Profile page~~(14.09.2022)
