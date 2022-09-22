@@ -24,7 +24,7 @@ export default function Navbar() {
     return classes.filter(Boolean).join(" ")
   }
   return (
-    <Disclosure as="nav" className="bg-slate-800">
+    <Disclosure as="nav" className="bg-primary">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -52,7 +52,7 @@ export default function Navbar() {
                 <div className="flex-shrink-0 flex items-center">
                   <img
                     className="block h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
+                    src="Auslife.png"
                     alt="Workflow"
                   />
                 </div>
@@ -155,7 +155,7 @@ export default function Navbar() {
                   <a href="/login">
                     <button
                       type="button"
-                      className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                      className="rounded-lg text-gray-300 hover:text-white"
                     >
                       <span>Login</span>
                     </button>

@@ -9,6 +9,9 @@ module.exports = {
       ...defaultTheme.screens
     },
     extend: {
+      colors: {
+        primary: "#262840"
+      },
       animation: {
         bounce: "onebounce 0.5s ease-in-out 1",
         bounce2: "onebounce 0.5s 0.3s ease-in-out 1"
