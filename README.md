@@ -33,5 +33,8 @@ A simple MERN stack app using google-oauth & AWS s3
 - [x] ~~Update login cookie session~~(21.09.2022)
   - Add Redis for session management
   - Set maxAge for session expire & rolling:true for refresh session
-- [ ] Update UI (favicon, logo, etc.)
+- [x] ~~Update UI (favicon, logo, etc.)~~(22.09.2022)
+  - Add favicon & logo
+  - Update color palette
+- [ ] Migrate Hosting server(Heroku free tier unavailable from 28.11.2022)
 <!-- prettier-ignore-end -->
