@@ -23,23 +23,54 @@ export default function Home() {
           </h1>
         </div>
       </div>
-      <div className="h-1/2 flex md:flex-row w-full items-center justify-center mt-10 xs:flex-col">
-        <div className="bg-red-300 p-5 rounded-lg mx-20 mt-10 hover:bg-red-400 hover:shadow-lg shadow-slate-500 animate-bounce">
-          <Link to="/house">
-            <i className="fa-solid fa-house fa-8x"></i>
-            <h1 className="text-center font-serif">
-              ShareHouse
-            </h1>
-          </Link>
-        </div>
-        <div className="bg-blue-300 p-5 px-7 rounded-lg mx-20 mt-10 hover:bg-blue-400 hover:shadow-lg shadow-slate-500 animate-bounce2">
-          <Link to="/job">
-            <i className="fa-solid fa-briefcase fa-8x"></i>
-            <h1 className="text-center font-serif">Jobs</h1>
-          </Link>
-        </div>
+
+      {/* Linkcard */}
+      <div className=" flex md:flex-row w-full items-center justify-center my-20 xs:flex-col xs:space-y-10 md:space-x-48 md:space-y-0">
+        <Link to="/house">
+          <div className=" rounded-lg shadow-lg shadow-slate-500 hover:bg-slate-200">
+            <div className="p-5">
+              <img
+                src="house.png"
+                alt="House"
+                className="w-24 mx-auto"
+              />
+              <p className="font-bold mt-3">
+                Find your sharehouse
+              </p>
+              <p className="font-serif text-gray-400">
+                List your houses for rent or <br />
+                share your rooms
+              </p>
+              <p className="font-bold text-blue-600">
+                Search Houses
+              </p>
+            </div>
+          </div>
+        </Link>
+        <Link to="/job">
+          <div className=" rounded-lg shadow-lg shadow-slate-500 hover:bg-slate-200">
+            <div className="p-5">
+              <img
+                src="contractor.png"
+                alt="contractor"
+                className="w-24 mx-auto"
+              />
+              <p className="font-bold mt-3">
+                Are you looking for a job?
+              </p>
+              <p className="font-serif text-gray-400">
+                Check out job opportunity or <br />
+                hire your staff
+              </p>
+              <p className="font-bold text-blue-600">
+                Search Jobs
+              </p>
+            </div>
+          </div>
+        </Link>
       </div>
-      <Ads />
+      {/* Latest posts */}
+      <div></div>
     </div>
   )
 }
