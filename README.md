@@ -18,8 +18,7 @@ A simple MERN stack app using google-oauth & AWS s3
 - MongoDB
 - AWS S3
 
-🌎 Live demo: https://mern-communitywebsite.herokuapp.com/
-
+🌎 Live demo: https://mern-community.onrender.com/
 📋 TODO:
 
 - [x] ~~Add resize image function before upload~~(03.09.2022)
