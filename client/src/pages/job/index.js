@@ -78,11 +78,11 @@ export default function Job() {
                 </li>
               </Link>
               <div className="flex">
-                <li className=" w-32 text-center text-sm">
-                  {item.username}
+                <li className=" w-32 md:text-center text-sm">
+                  😃{item.username}
                 </li>
                 <li className=" w-32 text-center text-sm">
-                  {item.createdAt?.slice(5, 10)}
+                  🕰{item.createdAt?.slice(5, 10)}
                 </li>
               </div>
             </div>
