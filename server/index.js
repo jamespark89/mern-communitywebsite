@@ -17,7 +17,7 @@ const Redis = require("ioredis")
 let redis = new Redis({
   host: "redis-18575.c296.ap-southeast-2-1.ec2.cloud.redislabs.com",
   port: 18575,
-  password: "9Yz2juTPthebGzSuBl8tOpUbKy2leI6l"
+  password: process.env.REDIS_PASSWORD
 })
 
 connectDB()
@@ -54,7 +54,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:3000"],
+    origin: [`${process.env.BASE_URL}`],
     methods: ["GET,PUT,POST,DELETE,PATCH,OPTIONS"]
   })
 )
