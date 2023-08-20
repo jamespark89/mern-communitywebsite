@@ -80,7 +80,7 @@ function App() {
           />
         </Route>
       </Routes>
-      <Footer />
+      <Footer className="my-0" />
     </Router>
   )
 }

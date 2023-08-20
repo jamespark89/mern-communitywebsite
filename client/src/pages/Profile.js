@@ -30,7 +30,7 @@ function Profile() {
   }, [])
   if (loading) return <LoadingSpinner />
   return (
-    <div className="min-h-screen md:max-w-fit xs:w-11/12 mx-auto my-10">
+    <div className="min-h-screen md:max-w-fit xs:w-11/12 mx-auto pt-20">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-gray-900">
           User Information

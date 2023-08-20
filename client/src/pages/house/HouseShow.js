@@ -45,7 +45,7 @@ function HouseShow() {
   }, [])
   if (loading) return <LoadingSpinner />
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pt-16">
       <Modal
         setOpen={setOpen}
         open={open}

@@ -77,14 +77,16 @@ function HouseEdit() {
   }, [])
   if (loading) return <LoadingSpinner />
   return (
-    <HouseForm
-      setLoading={setLoading}
-      formData={formData}
-      images={images}
-      setFormData={setFormData}
-      setImages={setImages}
-      handleFormSubmission={handleFormSubmission}
-    />
+    <div className="pt-16">
+      <HouseForm
+        setLoading={setLoading}
+        formData={formData}
+        images={images}
+        setFormData={setFormData}
+        setImages={setImages}
+        handleFormSubmission={handleFormSubmission}
+      />
+    </div>
   )
 }
 

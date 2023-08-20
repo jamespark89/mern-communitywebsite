@@ -1,6 +1,5 @@
 import { useSelector } from "react-redux"
 import { Link } from "react-router-dom"
-import Ads from "components/Ads"
 import LoadingSpinner from "components/LoadingSpinner"
 
 export default function Home() {
@@ -8,7 +7,7 @@ export default function Home() {
 
   if (isLoading) return <LoadingSpinner />
   return (
-    <div>
+    <div className="min-h-screen pt-16">
       <div className="h-72">
         <div className="flex h-72 absolute overflow-hidden w-full -z-50">
           <img
@@ -23,8 +22,6 @@ export default function Home() {
           </h1>
         </div>
       </div>
-
-      {/* Linkcard */}
       <div className=" flex md:flex-row w-full items-center justify-center my-20 xs:flex-col xs:space-y-10 md:space-x-48 md:space-y-0">
         <Link to="/house">
           <div className=" rounded-lg shadow-lg shadow-slate-500 hover:bg-slate-200">
@@ -69,8 +66,6 @@ export default function Home() {
           </div>
         </Link>
       </div>
-      {/* Latest posts */}
-      <div></div>
     </div>
   )
 }

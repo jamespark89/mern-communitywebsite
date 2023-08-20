@@ -49,13 +49,15 @@ function JobEdit() {
   }, [])
   if (loading) return <LoadingSpinner />
   return (
-    <JobForm
-      username={username}
-      title={title}
-      contents={contents}
-      onChange={onChange}
-      saveJob={saveJob}
-    />
+    <div className="pt-16">
+      <JobForm
+        username={username}
+        title={title}
+        contents={contents}
+        onChange={onChange}
+        saveJob={saveJob}
+      />
+    </div>
   )
 }
 

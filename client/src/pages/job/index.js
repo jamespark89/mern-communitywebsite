@@ -37,8 +37,8 @@ export default function Job() {
   }, [currentPage, userId, query])
 
   return (
-    <div className="min-h-screen md:max-w-fit xs:w-11/12 mx-auto my-10">
-      <JobSearchBar />
+    <div className="min-h-screen md:max-w-fit xs:w-11/12 mx-auto pt-20">
+      <JobSearchBar className="absolute z-0" />
       <div className="flex justify-end ">
         <button
           onClick={() => navigate("/job/new")}
@@ -79,10 +79,10 @@ export default function Job() {
               </Link>
               <div className="flex">
                 <li className=" w-32 text-center text-sm">
-                  😃{item.username}
+                  {item.username}
                 </li>
                 <li className=" w-32 text-center text-sm">
-                  🕰{item.createdAt?.slice(5, 10)}
+                  {item.createdAt?.slice(5, 10)}
                 </li>
               </div>
             </div>
