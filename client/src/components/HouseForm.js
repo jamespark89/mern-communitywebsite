@@ -23,8 +23,11 @@ function HouseForm({
   }
   const onImageChange = (e) => {
     const maxAllowedSize = 2 * 1024 * 1024
+    const maxAllowedNumber = 5
     if (e.target.files[0]?.size > maxAllowedSize)
       return alert("Max file size: 2MB!")
+    if (images.length + 1 > maxAllowedNumber)
+      return alert("Max file number: 5!")
     e.target.files[0] &&
       setImages((prev) => [...prev, e.target.files[0]])
   }
