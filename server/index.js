@@ -96,7 +96,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use(errorHandler)
-var port = process.env.PORT || 4000
+var port = process.env.PORT
 app.listen(port, function () {
   console.log("server on! http://localhost:" + port)
 })
