@@ -26,9 +26,9 @@ const resizeImages = async (req, res, next) => {
         .resize(640, 480)
         .toFormat("jpeg")
         .jpeg({ quality: 90 })
-        .toFile(`uploads/${newFilename}`)
+        .toFile(`tmp/${newFilename}`)
       const newFile = {
-        path: `uploads/${newFilename}`,
+        path: `tmp/${newFilename}`,
         filename: newFilename
       }
       req.body.images.push(newFile)
