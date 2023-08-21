@@ -29,7 +29,9 @@ async function uploadFile(file) {
 async function getFileStream(fileKey) {
   const downloadParams = {
     Key: fileKey,
-    Bucket: bucketName
+    Bucket: bucketName,
+    ResponseContentType: "image/jpeg",
+    ResponseContentEncoding: "base64"
   }
   try {
     const request = s3.getObject(downloadParams)
