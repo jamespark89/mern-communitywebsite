@@ -6,7 +6,7 @@ const fs = require("fs")
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/")
+    cb(null, "tmp/")
   },
   filename: (req, file, cb) => {
     cb(null, uuid.v4().toString() + "_" + file.originalname)
