@@ -64,13 +64,13 @@ app.use("/api/users", require("./routes/users"))
 app.use("/api/jobs", require("./routes/jobs"))
 app.use("/api/houses", require("./routes/houses"))
 app.use("/auth", require("./routes/auth"))
-app.use(
-  "/uploads",
-  express.static(path.join(__dirname, "uploads"))
-)
+app.use("/tmp", express.static(path.join(__dirname, "tmp")))
 app.get("/images/:key", async (req, res) => {
   const key = req.params.key
   const readStream = await getFileStream(key)
+  res.setHeader("Content-type", "image/jpeg")
+  res.setHeader("Connection", "keep-alive")
+  res.setHeader("Keep-Alive", "timeout=5")
   readStream.pipe(res)
 })
 // serve frontend
