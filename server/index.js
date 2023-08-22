@@ -20,7 +20,6 @@ let redis = new Redis({
   password: process.env.REDIS_PASSWORD
 })
 
-connectDB()
 //Passport
 app.use(
   session({
@@ -97,6 +96,8 @@ if (process.env.NODE_ENV === "production") {
 
 app.use(errorHandler)
 var port = process.env.PORT || 3000
-app.listen(port, function () {
-  console.log("server on! http://localhost:" + port)
+connectDB().then(() => {
+  app.listen(port, () => {
+    console.log(`server on! http://localhost:${port}`)
+  })
 })
