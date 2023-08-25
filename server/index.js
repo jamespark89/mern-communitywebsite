@@ -68,8 +68,8 @@ app.get("/images/:key", async (req, res) => {
   const key = req.params.key
   const readStream = await getFileStream(key)
   res.setHeader("Content-type", "image/jpeg")
-  res.setHeader("Connection", "keep-alive")
-  res.setHeader("Keep-Alive", "timeout=5")
+  // res.setHeader("Connection", "keep-alive")
+  // res.setHeader("Keep-Alive", "timeout=5")
   readStream.pipe(res)
 })
 // serve frontend
